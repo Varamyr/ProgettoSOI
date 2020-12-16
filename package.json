@@ -1,0 +1,26 @@
+{
+  "name": "progettosoi",
+  "version": "1.0.0",
+  "description": "E-commerce web application",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Varamyr/ProgettoSOI.git"
+  },
+  "author": "Daria Mori, Vittorio Bernuzzi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Varamyr/ProgettoSOI/issues"
+  },
+  "homepage": "https://github.com/Varamyr/ProgettoSOI#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
