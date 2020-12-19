@@ -34,8 +34,7 @@ client.connect(err => {
   client.close();
 });*/
 
-const port = process.env.port || 5000;
-app.listen(port, () => console.log(`Server listening on port ${port}`));
+
 
 const home = require("./routes/api/home");
 const userHome = require("./routes/api/home");
@@ -43,12 +42,22 @@ const vendorHome = require("./routes/api/home");
 
 app.use("/api/home", home);
 
+//Gestisco i file in produzione
+if(process.env.NODE_ENV === 'production'){
+  //Static folder
+  app.use(express.static(__dirname + '/public'));
+
+  //Handle single page app
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
+
 //In realtà queste api devono essere utilizzate dopo autenticazione
-app.use("/api/user/home", userHome);
-app.use("/api/vendor/home", vendorHome);
+//app.use("/api/user/home", userHome);
+//app.use("/api/vendor/home", vendorHome);
 
 /*app.get("/", (req, res) => {
   res.send("Ciao mamma");
 });*/
 
-
+const port = process.env.port || 5000;
+app.listen(port, () => console.log(`Server listening on port ${port}`));
