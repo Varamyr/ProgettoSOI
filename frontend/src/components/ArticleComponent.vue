@@ -4,8 +4,8 @@
     <!-- Creare gli articoli qui-->
     <hr>
     <p class="error" v-if="error">{{error}}</p>
-    <div class="articles-container">
-        <b-card-group deck style="justify-content: center;">
+    <div class="articles-container" >
+        <div deck class="card-group" style="justify-content: center;">
           <b-card
             no-body
             class="m-2 "
@@ -19,27 +19,28 @@
                 <b-img class="h-100 embed-responsive" style="object-fit: cover;" fluid src="https://picsum.photos/1024/400/?image=41" alt="Image 1"></b-img>
               </b-col>
               <b-col sm="6" class="py-3">
-                <h4>{{article.nomeArticolo}}</h4>
-                <b-card-text>
+                <h4 v-bind:nomeArticolo="article.nomeArticolo">
+                  {{article.nomeArticolo}}
+                </h4>
+                <h6 v-bind:descrizione="article.descrizione">
                   {{article.descrizione}}
-                </b-card-text>
-                <b-card-text>
+                </h6>
+                <b-card-text v-bind:prezzo="article.prezzo">
                   Prezzo: <h4>{{article.prezzo}} $</h4>
                 </b-card-text>
-                <b-card-text>
+                <b-card-text v-bind:venditore="article.venditore">
                   Venditore: {{article.venditore}}
                 </b-card-text>
               </b-col>
             </div>
           </b-card>
-        </b-card-group>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 import ArticleService from '../ArticleService'
-
 export default {
   name: 'ArticleComponent',
   data() {
@@ -52,7 +53,10 @@ export default {
     try{
       this.articles = await ArticleService.getArticles();
     }catch(err){
-      this.error = err.message;
+      if(err.response.status === 500)
+        this.error = 'Errore del server: prova a ricaricare la pagina.'
+      else
+        this.error = err.message;
     }
   }
 }
@@ -67,8 +71,8 @@ div.container {
 }
 
 p.error{
-  border: 1px solid #ff5b5f;
-  background-color: #ff5bc1;
+  border: 1px solid #000000;
+  background-color:#afabad;
   padding: 10px;
   margin-bottom: 15px;
 }
