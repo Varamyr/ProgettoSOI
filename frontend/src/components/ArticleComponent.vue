@@ -4,8 +4,8 @@
     <!-- Creare gli articoli qui-->
     <hr>
     <p class="error" v-if="error">{{error}}</p>
-    <div class="articles-container" >
-        <div deck class="card-group" style="justify-content: center;">
+    <div class="articles-container">
+        <div class="card-group" style="justify-content:center;">
           <b-card
             no-body
             class="m-2 "
@@ -16,7 +16,7 @@
             v-bind:key="article._id">
             <div class="row h-100">
               <b-col sm="6">
-                <b-img class="h-100 embed-responsive" style="object-fit: cover;" fluid src="https://picsum.photos/1024/400/?image=41" alt="Image 1"></b-img>
+                <b-img class="h-100 embed-responsive" style="object-fit: cover;" fluid src="https://images.everyeye.it/img-notizie/nvidia-geforce-rtx-3090-3080-3070-trapelano-specifiche-prezzi-v3-465276.jpg" alt="Image 1"></b-img>
               </b-col>
               <b-col sm="6" class="py-3">
                 <h4 v-bind:nomeArticolo="article.nomeArticolo">
