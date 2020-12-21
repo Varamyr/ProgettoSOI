@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+//const cors = require("cors");
+
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(function (req, res, next) {
 });
 
 //app.use(cors);
-app.options('*', cors());
+//app.options('*', cors());
 app.use(bodyParser.json());
 
 //Connessione a mongodb cluster
@@ -35,7 +36,7 @@ client.connect(err => {
 });*/
 
 
-
+//Routes
 const home = require("./routes/api/home");
 const userHome = require("./routes/api/home");
 const vendorHome = require("./routes/api/home");
