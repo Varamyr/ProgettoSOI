@@ -1,64 +1,57 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-//const cors = require("cors");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
+const passport = require('passport');
 
-
+//Inizializzo l'app
 const app = express();
 
-//Middleware
+/** Middlewares  **/
 
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  // Pass to next layer of middleware
-  next();
-});
+//Uso il middleware cors per accettare le richieste cross-origin [necessario per usare Vue assieme ad Express]
+app.options('*', cors());
+app.use(cors());
 
-//app.use(cors);
-//app.options('*', cors());
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+
+//Middleware che effettua parsine sulle richieste HTTP
 app.use(bodyParser.json());
-
-//Connessione a mongodb cluster
-/*const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://progettosoi:<password>@cluster0.7r4s2.mongodb.net/<dbname>?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});*/
-
-
-//Routes
-const home = require("./routes/api/home");
-const userHome = require("./routes/api/home");
-const vendorHome = require("./routes/api/home");
-
-app.use("/api/home", home);
 
 //Gestisco i file in produzione
 if(process.env.NODE_ENV === 'production'){
-  //Static folder
-  app.use(express.static(__dirname + '/public'));
-
-  //Handle single page app
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+  	//Static folder
+	app.use(express.static(__dirname + '/public'));
+	//Handle single page app
+	app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 }
 
-//In realtà queste api devono essere utilizzate dopo autenticazione
-//app.use("/api/user/home", userHome);
-//app.use("/api/vendor/home", vendorHome);
+//Utilizzo il middleware passport per gestire l'autenticazione
+app.use(passport.initialize());
+//Scelgo la strategia
+require('./config/passport')(passport)
 
-/*app.get("/", (req, res) => {
-  res.send("Ciao mamma");
-});*/
+//Connessione al database mongoDB tramite middleware Mongoose
+const db = require('./config/keys').mongoURI;
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }).then( () => {
+	console.log(`Connessione al database ${db} riuscita.`);
+}).catch( err => {
+	console.log(`Errore durante la connessione al database ${db}: ${err}`);
+});
+
+/** Routes  **/
+const home = require('./routes/api/home');
+app.use('/api/home', home);
+
+const users = require('./routes/api/auth');
+app.use('/api/auth', users);
+
+const userDashboard = require('./routes/api/dashboard/user');
+app.use('/api/dashboard/user', userDashboard);
+
 
 const port = process.env.port || 5000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));
