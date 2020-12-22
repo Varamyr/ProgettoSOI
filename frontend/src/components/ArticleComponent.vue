@@ -19,15 +19,15 @@
                 <b-img class="h-100 embed-responsive" style="object-fit: cover;" fluid src="https://images.everyeye.it/img-notizie/nvidia-geforce-rtx-3090-3080-3070-trapelano-specifiche-prezzi-v3-465276.jpg" alt="Image 1"></b-img>
               </b-col>
               <b-col sm="6" class="py-3">
-                <h4>{{article.nomeArticolo}}</h4>
+                <h4>{{article.name}}</h4>
                 <b-card-text>
-                  {{article.descrizione}}
+                  {{article.description}}
                 </b-card-text>
                 <b-card-text>
-                  Prezzo: <h4>{{article.prezzo}} $</h4>
+                  Prezzo: <h4>{{article.price}} $</h4>
                 </b-card-text>
                 <b-card-text>
-                  Venditore: {{article.venditore}}
+                  Venditore: {{article.sellerid}}
                 </b-card-text>
               </b-col>
             </div>

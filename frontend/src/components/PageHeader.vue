@@ -17,10 +17,10 @@
                 <b-nav-item-dropdown right>
                 <!-- Using 'button-content' slot -->
                 <template #button-content>
-                    <em>User</em>
+                    <em><b-icon-lock-fill/> Login</em>
                 </template>
-                <b-dropdown-item href="#">Login</b-dropdown-item>
-                <b-dropdown-item href="#">Register</b-dropdown-item>
+                <b-dropdown-item href="#"><b-icon-person/> Pagina di Login</b-dropdown-item>
+                <b-dropdown-item href="#"><b-icon-person-plus/> Registrati</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
             </b-collapse>
