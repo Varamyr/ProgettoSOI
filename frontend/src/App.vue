@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <page-header/>
     <articles-component/>
   </div>
 </template>
 
 <script>
+import PageHeader from './components/PageHeader.vue'
 import ArticlesComponent from './components/ArticleComponent.vue'
 
 export default {
   name: 'App',
   components: {
+    PageHeader,
     ArticlesComponent
   }
 }
