@@ -13,72 +13,72 @@ const User = require('../../model/User');
  */
 
 router.post('/register', (req, res) => {
-    let { 
-        username, 
-        password, 
-        confirm_password, 
-        email, 
-        name, 
-        surname, 
-        address, 
-        city, 
-        province, 
-        cellphone 
-    } = req.body;
+	let { 
+		username, 
+		password, 
+		confirm_password, 
+		email, 
+		name, 
+		surname, 
+		address, 
+		city, 
+		province, 
+		cellphone 
+	} = req.body;
 
-    //Validazione dei dati
+	//Validazione dei dati
 
-    //Coincidenza password
-    if( password != confirm_password ){
-        return res.status(400).json({
-            msg: "Le due password non coincidono."
-        });
-    }else{
-        //Unicità username
-        User.findOne({username: username}).then(user => {
-            if(user){
-                return res.status(400).json({
-                    msg : "L'username utilizzato è già stato registrato."
-                });
-            }else{
-                //Unicità email
-                User.findOne({email: email}).then(user => {
-                    if(user){
-                        return res.status(400).json({
-                            msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
-                        });
-                    }else{
-                        //I dati sono validi, ora posso registrare
-                        let newUser = new User({
-                            username, 
-                            password, 
-                            email, 
-                            name, 
-                            surname, 
-                            address, 
-                            city, 
-                            province, 
-                            cellphone 
-                        });
-                        
-                        //Hashing della password
-                        bcrypt.genSalt(10, (err, salt) => {
-                            bcrypt.hash(newUser.password, salt, (err, hash) => {
-                                if(err) throw err;
-                                newUser.password = hash;
-                                newUser.save().then( user => {
-                                    return res.status(201).json({
-                                        success: true,
-                                        msg: "Registrazione effettuata."
-                                    });
-                                });
-                            })
-                        });
-                    }
-                });
-            }
-        });
-    }
+	//Coincidenza password
+	if( password != confirm_password ){
+		return res.status(400).json({
+			msg: "Le due password non coincidono."
+		});
+	}else{
+		//Unicità username
+		User.findOne({username: username}).then(user => {
+			if(user){
+					return res.status(400).json({
+						msg : "L'username utilizzato è già stato registrato."
+					});
+			}else{
+					//Unicità email
+					User.findOne({email: email}).then(user => {
+						if(user){
+							return res.status(400).json({
+									msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
+							});
+						}else{
+							//I dati sono validi, ora posso registrare
+							let newUser = new User({
+									username, 
+									password, 
+									email, 
+									name, 
+									surname, 
+									address, 
+									city, 
+									province, 
+									cellphone 
+							});
+							
+							//Hashing della password
+							bcrypt.genSalt(10, (err, salt) => {
+									bcrypt.hash(newUser.password, salt, (err, hash) => {
+										if(err) throw err;
+										newUser.password = hash;
+										newUser.save().then( user => {
+											return res.status(201).json({
+													success: true,
+													msg: "Registrazione effettuata."
+											});
+										});
+									})
+							});
+						}
+					});
+			}
+		});
+	}
 });
 
 /**
