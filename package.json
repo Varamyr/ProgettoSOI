@@ -1,35 +1,35 @@
 {
-  "name": "progettosoi",
-  "version": "1.0.0",
-  "description": "E-commerce web application",
-  "main": "server.js",
-  "scripts": {
-    "test": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Varamyr/ProgettoSOI.git"
-  },
-  "author": "Daria Mori, Vittorio Bernuzzi",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Varamyr/ProgettoSOI/issues"
-  },
-  "homepage": "https://github.com/Varamyr/ProgettoSOI#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "concurrently": "^5.3.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.6.3",
-    "mongoose": "^5.11.8",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.6"
-  }
+	"name": "progettosoi",
+	"version": "1.0.0",
+	"description": "E-commerce web application",
+	"main": "server.js",
+	"scripts": {
+		"test": "node backend/server.js",
+		"dev": "nodemon backend/server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Varamyr/ProgettoSOI.git"
+	},
+	"author": "Daria Mori, Vittorio Bernuzzi",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Varamyr/ProgettoSOI/issues"
+	},
+	"homepage": "https://github.com/Varamyr/ProgettoSOI#readme",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.19.0",
+		"concurrently": "^5.3.0",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongodb": "^3.6.3",
+		"mongoose": "^5.11.8",
+		"passport": "^0.4.1",
+		"passport-jwt": "^4.0.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.6"
+	}
 }
