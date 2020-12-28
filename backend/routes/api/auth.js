@@ -1,20 +1,21 @@
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const key = require('../../config/keys').secret;
 const passport = require('passport');
 const User = require('../../model/User');
 
+
+const router = express.Router();
+
 /**
- * @route POST api/users/register
+ * @route POST api/auth/register
  * @desc Registro l'utente
  * @access Public
  */
 
 router.post('/register', (req, res) => {
 	let { 
-		username, 
 		password, 
 		confirm_password, 
 		email, 
@@ -34,66 +35,55 @@ router.post('/register', (req, res) => {
 			msg: "Le due password non coincidono."
 		});
 	}else{
-		//Unicità username
-		User.findOne({username: username}).then(user => {
+		//Unicità email
+		User.findOne({email: email}).then(user => {
 			if(user){
-					return res.status(400).json({
-						msg : "L'username utilizzato è già stato registrato."
-					});
+				return res.status(400).json({
+						msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
+				});
 			}else{
-					//Unicità email
-					User.findOne({email: email}).then(user => {
-						if(user){
-							return res.status(400).json({
-									msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
+				//I dati sono validi, ora posso registrare
+				let newUser = new User({
+						password, 
+						email, 
+						name, 
+						surname, 
+						address, 
+						city, 
+						province, 
+						cellphone 
+				});
+				
+				//Hashing della password
+				bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(newUser.password, salt, (err, hash) => {
+							if(err) throw err;
+							newUser.password = hash;
+							newUser.save().then( user => {
+								return res.status(201).json({
+										success: true,
+										msg: "Registrazione effettuata."
+								});
 							});
-						}else{
-							//I dati sono validi, ora posso registrare
-							let newUser = new User({
-									username, 
-									password, 
-									email, 
-									name, 
-									surname, 
-									address, 
-									city, 
-									province, 
-									cellphone 
-							});
-							
-							//Hashing della password
-							bcrypt.genSalt(10, (err, salt) => {
-									bcrypt.hash(newUser.password, salt, (err, hash) => {
-										if(err) throw err;
-										newUser.password = hash;
-										newUser.save().then( user => {
-											return res.status(201).json({
-													success: true,
-													msg: "Registrazione effettuata."
-											});
-										});
-									})
-							});
-						}
-					});
+						})
+				});
 			}
 		});
 	}
 });
 
 /**
- * @route POST api/users/login
+ * @route POST api/auth/login
  * @desc Il client si autentica con il server
  * @access Public
  */
-
 router.post('/login', (req, res) => {
    User.findOne({
-      username : req.body.username
+      email : req.body.email
    }).then( user => {
       if(!user){
 			return res.status(404).json({
-				msg: "L'username inserito non è corretto.",
+				msg: "L'email inserita non è corretta.",
 				success: false
 			});
       }else{
@@ -105,7 +95,6 @@ router.post('/login', (req, res) => {
 					// 	andrebbe criptato con chiave pubblica del client
 					const payload = {
 						_id : user._id,
-						username : user.username,
 						email : user.email,
 						name : user.name,
 						surname : user.surname,
@@ -119,6 +108,7 @@ router.post('/login', (req, res) => {
 					}, (err, token) => {
 						res.status(200).json({
 							success: true,
+							user: user,
 							token: `Bearer ${token}`,
 							msg: 'Autenticazione effettuata.'
 						});

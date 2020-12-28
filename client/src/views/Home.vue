@@ -6,17 +6,17 @@
 </template>
 
 <script>
-import PageHeader from '../components/PageHeader.vue'
 import ArticlesComponent from '../components/ArticleComponent'
+import PageHeader from '../components/PageHeader';
 
 export default {
 	name: 'Home',
 	components: {
-		PageHeader,
-		ArticlesComponent
+		ArticlesComponent,
+		PageHeader
 	}
 }
 </script>
 
-<style>
+<style scoped>
 </style>

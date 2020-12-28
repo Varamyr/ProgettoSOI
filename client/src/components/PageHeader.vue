@@ -2,7 +2,8 @@
 	<div class="headerContainer">
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark">
 			
-			<router-link to="/" class="navbar-brand" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png"> Hello E-commerce</h3> </router-link>
+			<router-link to="/" class="navbar-brand not-logged" v-if="!isLogged"> <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png"> Hello E-commerce</h3> </router-link>
+			<div class="navbar-brand" v-if="isLogged"> <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png"> Hello E-commerce</h3> </div>
 			
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -10,23 +11,29 @@
 
 			<!-- Right aligned nav items -->
 			<b-navbar-nav class="ml-auto">
-					<b-nav-item-dropdown right>
-					<!-- Using 'button-content' slot -->
-					<template #button-content>
-						<em><b-icon-lock-fill/> Login</em>
-					</template>
-					<router-link to="/login" class="dropdown-item"><b-icon-person/> Pagina di Login</router-link>
-					<router-link to="/register" class="dropdown-item"><b-icon-person-plus/> Registrati</router-link>
-					</b-nav-item-dropdown>
+					<router-link to="/login" class="nav-link"  v-if="!isLogged"> <h5><b-icon-person/> Login</h5> </router-link>
+					<router-link to="/logout" class="nav-link" v-if="isLogged" @click.prevent="logoutUser"> <h5><b-icon-person-x/> Logout</h5> </router-link>
 			</b-navbar-nav>
+					
 			</b-collapse>
 		</b-navbar>
 	</div>
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex"
+
 export default {
-	name: 'PageHeader'
+	name: 'PageHeader',
+	computed: {
+		...mapGetters(["isLogged"])
+	},
+	actions: {
+		...mapActions(["logout"]),
+		logoutUser() {
+			this.logout();
+		}
+	}
 }
 </script>
 
@@ -49,7 +56,7 @@ export default {
 	cursor: pointer;
 }
 
-.navbar-brand{
+.navbar-brand.not-logged{
 	cursor: pointer;
 }
 </style>
