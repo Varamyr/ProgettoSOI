@@ -3,8 +3,12 @@ const mongodb = require("mongodb");
 
 const router = express.Router();
 
-//Get items on sale
 
+/**
+ * @route POST api/home
+ * @desc Ottengo tutti gli oggetti in vendita
+ * @access Public
+ */
 router.get('/', async (req, res) => {
    const articles = await getItemsCollection();
 

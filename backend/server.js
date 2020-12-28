@@ -10,16 +10,18 @@ const app = express();
 
 /** Middlewares  **/
 
-//Uso il middleware cors per accettare le richieste cross-origin [necessario per usare Vue assieme ad Express]
-app.options('*', cors());
-app.use(cors());
-
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
 //Middleware che effettua parsine sulle richieste HTTP
 app.use(bodyParser.json());
+
+//Uso il middleware cors per accettare le richieste cross-origin [necessario per usare Vue assieme ad Express]
+app.use(cors({
+	origin: '*',
+	optionsSuccessStatus: 200
+}));
 
 //Gestisco i file in produzione
 if(process.env.NODE_ENV === 'production'){
@@ -46,8 +48,8 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }).then( 
 const home = require('./routes/api/home');
 app.use('/api/home', home);
 
-const users = require('./routes/api/auth');
-app.use('/api/auth', users);
+const auth = require('./routes/api/auth');
+app.use('/api/auth', auth);
 
 const userDashboard = require('./routes/api/dashboard/user');
 app.use('/api/dashboard/user', userDashboard);

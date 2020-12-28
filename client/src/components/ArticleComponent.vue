@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import ArticleService from '../ArticleService'
+import ArticleService from '../services/ArticleService'
+
 export default {
 	name: 'ArticleComponent',
 	data() {
@@ -51,7 +52,7 @@ export default {
 		try{
 		this.articles = await ArticleService.getArticles();
 		}catch(err){
-		this.error = err.message;
+			this.error = err.response.status;
 		}
 	}
 }
@@ -66,9 +67,9 @@ div.container {
 }
 
 p.error{
-	border: 1px solid #ff5b5f;
-	background-color: #ff5bc1;
+	background-color: #ffffff;
 	padding: 10px;
 	margin-bottom: 15px;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 }
 </style>
