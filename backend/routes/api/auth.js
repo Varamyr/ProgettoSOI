@@ -31,14 +31,14 @@ router.post('/register', (req, res) => {
 
 	//Coincidenza password
 	if( password != confirm_password ){
-		return res.status(400).json({
+		return res.status(404).json({
 			msg: "Le due password non coincidono."
 		});
 	}else{
 		//Unicità email
 		User.findOne({email: email}).then(user => {
 			if(user){
-				return res.status(400).json({
+				return res.status(404).json({
 						msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
 				});
 			}else{

@@ -55,7 +55,7 @@ export default {
 			this.login(user)
 			.then(res => {
 				if(res.data.success){
-					this.$router.push('/dashboard/user')
+					this.$router.push('/dashboard/user/profile')
 				}/*else{
 
 				}*/
