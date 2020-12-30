@@ -7,7 +7,7 @@
 					<h4 class="text-title">Autenticazione</h4>
 				</div>
 				<div class="card-body">
-					<form>
+					<form @submit.prevent="loginUser">
 						<div class="form-group">
 							<label for="loginEmail">Indirizzo email</label>
 							<input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Inserisci qui la tua email" v-model="email">
@@ -19,7 +19,7 @@
 						<div class="alert alert-danger" role="alert" v-if="error">
 							Attenzione: la combinazione di email e password non è corretta.
 						</div>
-						<input type="submit" class="btn btn-dark" value="Login" @click.prevent="loginUser"/>
+						<input type="submit" class="btn btn-dark" value="Login"/>
 					</form><br>
 					<small>
 						Ti serve un nuovo account? <router-link to="/register">Registrati</router-link>.
@@ -55,7 +55,7 @@ export default {
 			this.login(user)
 			.then(res => {
 				if(res.data.success){
-					this.$router.push('/dashboard/user/profile')
+					this.$router.push('/dashboard/user')
 				}/*else{
 
 				}*/

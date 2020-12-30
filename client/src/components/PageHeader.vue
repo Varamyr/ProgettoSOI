@@ -12,7 +12,7 @@
 			<!-- Right aligned nav items -->
 			<b-navbar-nav class="ml-auto">
 					<router-link to="/login" class="nav-link"  v-if="!isLogged"> <h5><b-icon-person/> Login</h5> </router-link>
-					<router-link to="/logout" class="nav-link" v-if="isLogged" @click.prevent="logoutUser"> <h5><b-icon-person-x/> Logout</h5> </router-link>
+					<a href="/logout" class="nav-link" v-if="isLogged" @click.prevent="logoutUser"> <h5><b-icon-person-x/> Logout</h5> </a>
 			</b-navbar-nav>
 					
 			</b-collapse>
@@ -28,7 +28,7 @@ export default {
 	computed: {
 		...mapGetters(["isLogged"])
 	},
-	actions: {
+	methods: {
 		...mapActions(["logout"]),
 		logoutUser() {
 			this.logout();

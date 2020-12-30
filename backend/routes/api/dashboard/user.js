@@ -12,7 +12,7 @@ const User = require('../../../model/User');
  * @access Public
  */
 
-router.get('/profile', passport.authenticate('jwt', { 
+router.get('/', passport.authenticate('jwt', { 
 	session : false 
 }), (req, res) => {
 	return res.json({

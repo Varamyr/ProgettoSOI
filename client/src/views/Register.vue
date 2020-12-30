@@ -8,7 +8,7 @@
 				</div>
 
 				<div class="card-body">
-					<form>
+					<form @submit.prevent="registerUser">
 						
 					<h5 class="text-subtitle">Completa tutti i campi per registrarti.</h5>
 						<br>
@@ -158,15 +158,15 @@
 						</div>
 						<div class="form-group">
 							<label for="regPhone">Cellulare</label>
-							<input type="number" class="form-control" id="regPhone" maxlength="30" v-model="phone">
+							<input type="number" class="form-control" id="regPhone" maxlength="50" v-model="phone">
 							<small>Questo campo è opzionale.</small>
 						</div>
 						<br>
-						<button type="submit" class="btn btn-dark"><h4 >Registrati</h4></button>
+						<input type="submit" class="btn btn-dark" value="Registrati"/>
 						<br>
 						<br>
 						<small>
-							Hai già un account? <router-link to="/login">Fai il login</router-link>.
+							Hai già un account? <router-link to="/login">Esegui il login</router-link>.
 						</small>
 					</form>
 				</div>
@@ -177,6 +177,7 @@
 
 <script>
 import PageHeader from '../components/PageHeader';
+import { mapActions } from 'vuex';
 
 export default {
 	name: 'Register',
@@ -195,7 +196,28 @@ export default {
 	},
 	components: {
 		PageHeader
-	}
+	},
+	methods: {
+		...mapActions(["register"]),
+		registerUser(){
+			let user = {
+				email: this.email,
+				password: this.password,
+				confirmPassword: this.confirmPassword,
+				name: this.name,
+				surname: this.surname,
+				address: this.address,
+				city: this.city,
+				province: this.province,
+				phone: this.phone
+			};
+			this.register(user).then(res => {
+				if(res.data.success){
+					this.$router.push("login");
+				}
+			});
+		}
+	},
 }
 </script>
 

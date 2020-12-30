@@ -16,60 +16,74 @@ const router = express.Router();
 
 router.post('/register', (req, res) => {
 	let { 
-		password, 
-		confirm_password, 
 		email, 
+		password, 
+		confirmPassword,
 		name, 
 		surname, 
 		address, 
 		city, 
 		province, 
-		cellphone 
+		phone 
 	} = req.body;
 
 	//Validazione dei dati
-
-	//Coincidenza password
-	if( password != confirm_password ){
+	if(email=='' || password=='' || confirmPassword=='' || name=='' || surname=='' || address=='' || city=='' || province==''){
 		return res.status(404).json({
-			msg: "Le due password non coincidono."
+			msg: "Completa tutti i campi prima di proseguire."
 		});
 	}else{
-		//Unicità email
-		User.findOne({email: email}).then(user => {
-			if(user){
+		if(email.lenght > 50 || password.lenght > 50 || confirmPassword.lenght > 50 || name.lenght > 50 || surname.lenght > 50 || address.lenght > 50 || city.lenght > 50 || province.lenght > 50 || phone.lenght > 50){
+			return res.status(404).json({
+				msg: "Alcuni dei campi non rispettano la lunghezza massima consentita (50 caratteri)."
+			});
+		}else{
+			//Coincidenza password
+			if( password != confirmPassword ){
 				return res.status(404).json({
-						msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
+					msg: "Le due password non coincidono."
 				});
 			}else{
-				//I dati sono validi, ora posso registrare
-				let newUser = new User({
-						password, 
-						email, 
-						name, 
-						surname, 
-						address, 
-						city, 
-						province, 
-						cellphone 
-				});
-				
-				//Hashing della password
-				bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(newUser.password, salt, (err, hash) => {
-							if(err) throw err;
-							newUser.password = hash;
-							newUser.save().then( user => {
-								return res.status(201).json({
-										success: true,
-										msg: "Registrazione effettuata."
-								});
-							});
-						})
+				//Unicità email
+				User.findOne({email: email}).then(user => {
+					if(user){
+						return res.status(404).json({
+								msg : "L'email utilizzata è già stata registrata, hai dimenticato la tua password?"
+						});
+					}else{
+						//I dati sono validi, ora posso registrare
+						let newUser = new User({
+								password, 
+								email, 
+								name, 
+								surname, 
+								address, 
+								city, 
+								province, 
+								phone 
+						});
+						
+						//Hashing della password
+						bcrypt.genSalt(10, (err, salt) => {
+								bcrypt.hash(newUser.password, salt, (err, hash) => {
+									if(err) throw err;
+									newUser.password = hash;
+									newUser.save().then( user => {
+										return res.status(201).json({
+												success: true,
+												msg: "Registrazione effettuata."
+										});
+									});
+								})
+						});
+					}
 				});
 			}
-		});
+		}
 	}
+
+	
+	
 });
 
 /**
@@ -77,6 +91,9 @@ router.post('/register', (req, res) => {
  * @desc Il client si autentica con il server
  * @access Public
  */
+
+ //TODO: ritornare user type
+ //TODO: se non trovo l'utente in users controllare anche in vendors e admins
 router.post('/login', (req, res) => {
    User.findOne({
       email : req.body.email
@@ -101,7 +118,8 @@ router.post('/login', (req, res) => {
 						address : user.address,
 						city : user.city,
 						province : user.province,
-						cellphone : user.cellphone
+						cellphone : user.cellphone,
+						type: 'user'
 					}
 					jwt.sign(payload, key, {
 						expiresIn: 604800
@@ -109,7 +127,8 @@ router.post('/login', (req, res) => {
 						res.status(200).json({
 							success: true,
 							user: user,
-							token: `Bearer ${token}`,
+							type: 'user',
+							token: `${token}`,
 							msg: 'Autenticazione effettuata.'
 						});
 					});

@@ -1,7 +1,7 @@
 <template>
 	<div id="user">
 		<page-header/>
-		Profilo utente
+		Profilo admin
 	</div>
 </template>
 
@@ -9,7 +9,7 @@
 import PageHeader from '../../components/PageHeader';
 
 export default {
-	name: 'user',
+	name: 'admin',
 	components: {
 		PageHeader
 	}
