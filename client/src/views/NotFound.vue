@@ -6,7 +6,7 @@
 				<img class="card-img-top" src="../assets/404.png" alt="Card image cap" >
 				<div class="card-title"><h3>Ci dispiace ma la pagina cercata non esiste!</h3> </div>
 				<div class="card-text">
-					<a href="#" @click="$router.go(-1)" class="btn btn-dark btn-lg">
+					<a href="#" @click="$router.go(-1)" class="btn primary-color text-white btn-lg ">
 						<b-icon-house />
 						Riportami indietro 
 					</a>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import PageHeader from '../components/PageHeader';
+import PageHeader from '../components/PageHeader.vue'
 
 export default {
 	name: 'PageNotFound',

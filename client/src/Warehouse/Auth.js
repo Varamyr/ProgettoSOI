@@ -4,10 +4,10 @@ import router from '../router';
 
 const state = {
 	token: localStorage.getItem('token') || '',
+	userType: localStorage.getItem('userType') || '',
 	user:{},
 	status: '',
-	error: '',
-	userType: ''
+	error: ''
 };
 
 const getters = {
@@ -18,17 +18,20 @@ const getters = {
 	// 		return false
 	// 	}
 	// },
-	isLogged: state => !!state.token, //in javascript la stringa vuota si valuta come falsa
+	isLogged: state => {
+		return !!state.token;
+	}, //in javascript la stringa vuota si valuta come falsa
+	getUserType: function(state){
+		console.log(state.getUserType);
+		return state.userType;
+	},
 	authState: state => {
 		return state.status;
 	},
 	user: state => {
 		return state.user;
 	},
-	userType: state => {
-		return state.userType;
-	},
-	error: state => !!state.loginError
+	error: state => state.error
 };
 
 const actions = {
@@ -36,43 +39,54 @@ const actions = {
 	async login({ commit }, user){
 		commit('auth_request');
 		try{
-			let res = await axios.post('http://localhost:5000/api/auth/login', user);
+			let res = await axios.post('/api/auth/login', user);
 		
 			if(res.data.success){
 				const token = res.data.token;
 				const user = res.data.user;
 				const userType = res.data.type;
 
-				console.log('si è loggato un '+res.data.type);
-				//Salvo il token nel localStorage
-				localStorage.setItem("token", token);
+				//Salvo il token e l'userType nel localStorage
+				await localStorage.setItem("token", token);
+				await localStorage.setItem("userType", userType);
+
+				const params = {token, user, userType}
 				//Aggiorno l'header delle richieste mandate da axios mettendo il token dell'autenticazione
+				commit('auth_success', params);
 				axios.defaults.headers.common["Authorization"] = token;
-				commit('auth_success', token, user, userType);
+				router.push('/dashboard/user');
 			}
-			return res;
+			return;
 		}catch(err){
-			commit('auth_failed', err.response.data.msg);
+			commit('auth_failed', err);
 		}
 	},
 	async register({commit}, userData){
 		commit('register_request');
-		let res = await axios.post('http://localhost:5000/api/auth/register', userData);
+		let res = await axios.post('/api/auth/register', userData);
 		try{
 			if(res.data.success){
 				commit('register_success');
 			}
 		}catch(err){
-			commit('register_failed', err.response.data.msg);
+			commit('register_failed', err);
 		}
 		return res;
 	},
 	async logout({commit}){
 		await localStorage.removeItem('token');
+		await localStorage.removeItem('user_type');
 		commit('logout');
 		delete axios.defaults.headers.common['Authorization'];
 		router.push('/');
 		return;
+	},
+	// Get the user Profile
+	async getProfile({ commit }) {
+			commit('profile_request');
+			let res = await axios.get('/api/dashboard/user');
+			commit('user_profile', res.data.user);
+			return res;
 	}
 };
 
@@ -81,15 +95,16 @@ const mutations = {
 		state.error = null
 		state.status = 'loading'
 	},
-	auth_success(state, token, user, userType){
-		state.token = token
-		state.user = user
+	auth_success(state, params){
+		
+		state.token = params.token
+		state.user = params.user
 		state.error = null
 		state.status = 'success'
-		state.userType = userType
+		state.userType = params.userType
 	},
-	auth_failed(state, msg){
-		state.error = msg
+	auth_failed(state, err){
+		state.error = err.response.data.msg
 	},
 	register_request(state){
 		state.error = null
@@ -99,8 +114,8 @@ const mutations = {
 		state.error = null
 		state.status = 'success'
 	},
-	register_failed(state, msg){
-		state.error = msg
+	register_failed(state, err){
+		state.error = err.response.data.msg
 		state.status = 'error'
 	},
 	logout(state){
@@ -108,7 +123,13 @@ const mutations = {
 		state.status = ''
 		state.error = null
 		state.user = {}
-		state.userType = ''
+		state.user_type = ''
+	},
+	profile_request(state) {
+		state.status = 'loading'
+	},
+	user_profile(state, user) {
+		state.user = user
 	}
 };
 

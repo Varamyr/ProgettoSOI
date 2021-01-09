@@ -7,17 +7,20 @@ const passport = require('passport');
 const User = require('../../../model/User');
 
 /**
- * @route POST api/user/userDashboard/profile
+ * @route GET api/dashboard/user/
  * @desc Carico i dati dell'utente
- * @access Public
+ * @access Private
  */
 
 router.get('/', passport.authenticate('jwt', { 
 	session : false 
 }), (req, res) => {
+	console.log('eccomi');
 	return res.json({
-		user: req.user
+		email: req.email
 	});
 });
+
+
 
 module.exports = router;

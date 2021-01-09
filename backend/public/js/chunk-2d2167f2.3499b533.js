@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d2167f2"],{c35a:function(e,n,a){"use strict";a.r(n);var r=function(){var e=this,n=e.$createElement,a=e._self._c||n;return a("div",{attrs:{id:"user"}},[a("page-header"),e._v(" Profilo vendor ")],1)},t=[],o=a("36ad"),c={name:"vendor",components:{PageHeader:o["a"]}},d=c,s=a("2877"),u=Object(s["a"])(d,r,t,!1,null,"9366a032",null);n["default"]=u.exports}}]);
+//# sourceMappingURL=chunk-2d2167f2.3499b533.js.map

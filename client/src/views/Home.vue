@@ -7,7 +7,7 @@
 
 <script>
 import ArticlesComponent from '../components/ArticleComponent'
-import PageHeader from '../components/PageHeader';
+import PageHeader from '../components/PageHeader.vue'
 
 export default {
 	name: 'Home',

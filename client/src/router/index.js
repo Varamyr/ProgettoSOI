@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-import store from '../store';
+import store from '../store/index.js';
 
 Vue.use(VueRouter)
 
@@ -39,6 +39,30 @@ const routes = [
 		}
 	},
 	{
+		path: '/dashboard/user/cart',
+		name: 'UserShoppingCart',
+		component: () => import('../views/dashboard/user/UserShoppingCart.vue'),
+		meta:{
+			requiresAuthUser: true
+		}
+	},
+	{
+		path: '/dashboard/user/shippings',
+		name: 'UserShippings',
+		component: () => import('../views/dashboard/user/UserShippings.vue'),
+		meta:{
+			requiresAuthUser: true
+		}
+	},
+	{
+		path: '/dashboard/user/orders',
+		name: 'UserOrders',
+		component: () => import('../views/dashboard/user/UserOrders.vue'),
+		meta:{
+			requiresAuthUser: true
+		}
+	},
+	{
 		path: '/dashboard/vendor',
 		name: 'VendorDashboard',
 		component: () => import('../views/dashboard/Vendor.vue'),
@@ -64,8 +88,6 @@ const routes = [
 	}
 ];
 
-
-
 const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
@@ -84,7 +106,7 @@ router.beforeEach((to, from, next) => {
 			//Se non sono loggato vengo reindirizzato verso la pagina di Login
 			next('/login');
 		}else{
-			switch(getUserType()){
+			switch(store.getters.getUserType){
 				case 'user':
 					next();
 					break;
@@ -101,7 +123,7 @@ router.beforeEach((to, from, next) => {
 			//Se non sono loggato vengo reindirizzato verso la pagina di Login
 			next('/login');
 		}else{
-			switch(getUserType()){
+			switch(store.getters.getUserType){
 				case 'user':
 					next('/dashboard/user');
 					break;
@@ -118,7 +140,7 @@ router.beforeEach((to, from, next) => {
 			//Se non sono loggato vengo reindirizzato verso la pagina di Login
 			next('/login');
 		}else{
-			switch(getUserType()){
+			switch(store.getters.getUserType){
 				case 'user':
 					next('/dashboard/user');
 					break;
@@ -132,9 +154,7 @@ router.beforeEach((to, from, next) => {
 		}
 	}else if(to.matched.some(record => record.meta.requiresGuest)){
 		if(store.getters.isLogged){
-
-			//
-			switch(getUserType()){
+			switch(store.getters.getUserType){
 				case 'user':
 					next('/dashboard/user');
 					break;
@@ -152,15 +172,5 @@ router.beforeEach((to, from, next) => {
 		next();
 	}
 });
-
-function getUserType(){
-	
-	//Parsing del web token per capire di che tipo di utente si tratti per portarlo verso la rispettiva dashboard
-	var token = localStorage.getItem("token");
-	var base64Url = token.split('.')[1];
-	var base64 = base64Url.replace('-', '+').replace('_', '/');
-	
-	return JSON.parse(atob(base64)).type;
-}
 
 export default router

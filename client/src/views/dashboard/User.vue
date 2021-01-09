@@ -1,16 +1,18 @@
 <template>
 	<div id="user">
 		<page-header/>
-		Profilo utente
+		<article-component/>
 	</div>
 </template>
 
 <script>
-import PageHeader from '../../components/PageHeader';
+import ArticleComponent from '../../components/ArticleComponent.vue';
+import PageHeader from '../../components/PageHeader.vue';
 
 export default {
 	name: 'user',
 	components: {
+		ArticleComponent,
 		PageHeader
 	}
 }

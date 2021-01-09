@@ -81,9 +81,6 @@ router.post('/register', (req, res) => {
 			}
 		}
 	}
-
-	
-	
 });
 
 /**
@@ -92,55 +89,70 @@ router.post('/register', (req, res) => {
  * @access Public
  */
 
+//IMPORTANTE: nel payload da restituire al client mettere sempre un campo type=user/vendor/admin
+//è necessario al client per gestire la navigazione nel router
+
  //TODO: ritornare user type
  //TODO: se non trovo l'utente in users controllare anche in vendors e admins
 router.post('/login', (req, res) => {
-   User.findOne({
-      email : req.body.email
-   }).then( user => {
-      if(!user){
-			return res.status(404).json({
-				msg: "L'email inserita non è corretta.",
-				success: false
-			});
-      }else{
-			//Se esiste l'utente controllo le password
-			bcrypt.compare(req.body.password, user.password).then( isMatch => {
-				if(isMatch){
-					//La password è corretta, gli mando il Token JSON per l'autenticazione
-					//ATTENZIONE: il token contiene dati sensibili: 
-					// 	andrebbe criptato con chiave pubblica del client
-					const payload = {
-						_id : user._id,
-						email : user.email,
-						name : user.name,
-						surname : user.surname,
-						address : user.address,
-						city : user.city,
-						province : user.province,
-						cellphone : user.cellphone,
-						type: 'user'
-					}
-					jwt.sign(payload, key, {
-						expiresIn: 604800
-					}, (err, token) => {
-						res.status(200).json({
-							success: true,
-							user: user,
-							type: 'user',
-							token: `${token}`,
-							msg: 'Autenticazione effettuata.'
+	let { 
+		email, 
+		password
+	} = req.body;
+
+   if(email=='' || password==''){
+		return res.status(404).json({
+			msg: "Completa tutti i campi prima di proseguire.",
+			success: false
+		});
+	}else{
+		User.findOne({
+			email : req.body.email
+		}).then( user => {
+			if(!user){
+				return res.status(404).json({
+					msg: "Non esiste un account con questa email.",
+					success: false
+				});
+			}else{
+				//Se esiste l'utente controllo le password
+				bcrypt.compare(req.body.password, user.password).then( isMatch => {
+					if(isMatch){
+						//La password è corretta, gli mando il Token JSON per l'autenticazione
+						//ATTENZIONE: il token contiene dati sensibili: 
+						// 	andrebbe criptato con chiave pubblica del client
+						const payload = {
+							_id : user._id,
+							email : user.email,
+							name : user.name,
+							surname : user.surname,
+							address : user.address,
+							city : user.city,
+							province : user.province,
+							cellphone : user.cellphone,
+							type: 'user'
+						}
+						jwt.sign(payload, key, {
+							expiresIn: 604800
+						}, (err, token) => {
+							res.status(200).json({
+								success: true,
+								user: user,
+								type: 'user',
+								token: `Bearer ${token}`,
+								msg: 'Autenticazione effettuata.'
+							});
 						});
-					});
-				}else{
-					return res.status(404).json({
-						msg: "La password non è corretta.",
-						success: false
-					});
-				}
-			});
-		}
-   });
+					}else{
+						return res.status(404).json({
+							msg: "La password utilizzata è sbagliata.",
+							success: false
+						});
+					}
+				});
+			}
+		});
+	}
 });
 
 module.exports = router;

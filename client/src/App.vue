@@ -14,6 +14,7 @@ export default {
 	},
 	created () {
 		document.title = "E-commerce";
+
 	}
 }
 </script>
@@ -38,5 +39,13 @@ export default {
 
 #nav a.router-link-exact-active {
 	color: #42b983;
+}
+
+.primary-color{
+	background-color: rgb(235, 133, 0)!important;
+}
+
+a{
+	color: rgb(235, 133, 0)!important;
 }
 </style>

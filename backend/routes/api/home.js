@@ -1,5 +1,7 @@
 const express = require("express");
 const mongodb = require("mongodb");
+const Article = require("../../model/Article");
+
 
 const router = express.Router();
 
@@ -9,17 +11,24 @@ const router = express.Router();
  * @desc Ottengo tutti gli oggetti in vendita
  * @access Public
  */
-router.get('/', async (req, res) => {
-   const articles = await getItemsCollection();
 
-   res.send(await articles.find({}).toArray());
+router.get('/', (req, res) => {
+
+	Article.find({})
+	.then( articles => {
+		if(articles.length > 0){
+			return res.status(200).json({
+				articles: articles,
+				msg: articles.length+" articoli trovati.",
+				success: true
+			});
+		}else{
+			return res.status(404).json({
+				msg: "Nessun articolo trovato.",
+				success: false
+			});
+		}
+	});
 });
-
-async function getItemsCollection(){
-   const uri = "mongodb+srv://progettosoi:progettosoi@cluster0.7r4s2.mongodb.net/progettosoi?retryWrites=true&w=majority";
-	const client = await mongodb.MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-   return client.db('progettosoi').collection('articles');
-}
 
 module.exports = router;

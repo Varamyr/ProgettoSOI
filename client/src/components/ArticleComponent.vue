@@ -24,12 +24,28 @@
 								{{article.description}}
 							</b-card-text>
 							<b-card-text>
-							Prezzo: <h4>{{article.price}} $</h4>
-							</b-card-text>
-							<b-card-text>
 								Venditore: {{article.sellerid}}
 							</b-card-text>
 						</b-col>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">
+							<div class="row h-100">
+								<div class="col-md-6">
+									<b-card-text>
+										Prezzo: <h4 class="price">{{article.price}} $</h4>
+									</b-card-text>
+								</div>
+								<div class="col-md-6">
+									<b-card-text v-if="isLogged && getUserType=='user'">
+										Aggiungi al carrello: <h4><button type="button" class="btn btn-buy primary-color text-white"><b-icon-cart/></button></h4>
+									</b-card-text>
+									<b-card-text v-if="!isLogged">
+										Aggiungi al carrello: <h4><router-link to="/login" type="button" class="btn btn-buy primary-color text-white" ><b-icon-cart/></router-link></h4>
+									</b-card-text>
+								</div>
+							</div>
+						</small>
 					</div>
 				</b-card>
 			</div>
@@ -38,22 +54,40 @@
 </template>
 
 <script>
-import ArticleService from '../services/ArticleService'
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	name: 'ArticleComponent',
 	data() {
 		return {
-		articles: [],
-		error : ''
+			articles: [],
+			error : ''
 		}
 	},
-	async created() {
-		try{
-		this.articles = await ArticleService.getArticles();
-		}catch(err){
-			this.error = err.response.status;
+	methods: {
+		...mapActions(['getArticles']),
+		loadArticles(){
+			this.getArticles()
+			.then(
+				res => {
+					if(res.data.success){
+						this.articles = res.data.articles
+					}
+				}
+			)
+			.catch(
+				err => {
+					console.log(err);
+			});
 		}
+	},
+	created() {
+		this.loadArticles();
+	},
+	computed: {
+		...mapGetters(["articlesError"]),
+		...mapGetters(["isLogged"]),
+		...mapGetters(["getUserType"])
 	}
 }
 </script>
@@ -71,5 +105,23 @@ p.error{
 	padding: 10px;
 	margin-bottom: 15px;
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.card{
+	border:0;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover{
+	background-color: chocolate!important;
+}
+
+h4.price{
+	padding-top:10px;
+}
+
+.btn-buy{
+	margin-top: 10px;
+	width: 100%;
 }
 </style>

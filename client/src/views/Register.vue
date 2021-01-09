@@ -3,7 +3,7 @@
 		<page-header/>
 		<div class="row">
 			<div class="card mx-auto text-left">
-				<div class="card-header bg-dark text-white">
+				<div class="card-header  primary-color text-white">
 					<h3 class="text-title">Registrazione</h3>
 				</div>
 
@@ -162,7 +162,7 @@
 							<small>Questo campo è opzionale.</small>
 						</div>
 						<br>
-						<input type="submit" class="btn btn-dark" value="Registrati"/>
+						<input type="submit" class="btn primary-color text-white" value="Registrati"/>
 						<br>
 						<br>
 						<small>
@@ -176,8 +176,8 @@
 </template>
 
 <script>
-import PageHeader from '../components/PageHeader';
 import { mapActions } from 'vuex';
+import PageHeader from '../components/PageHeader.vue';
 
 export default {
 	name: 'Register',

@@ -3,7 +3,7 @@
 		<page-header/>
 		<div class="row">
 			<div class="card mx-auto text-left">
-				<div class="card-header bg-dark text-white">
+				<div class="card-header primary-color text-white">
 					<h4 class="text-title">Autenticazione</h4>
 				</div>
 				<div class="card-body">
@@ -16,10 +16,8 @@
 							<label for="loginPassword">Password</label>
 							<input type="password" class="form-control" id="loginPassword" placeholder="Inserisci qui la tua password" v-model="password">
 						</div><br>
-						<div class="alert alert-danger" role="alert" v-if="error">
-							Attenzione: la combinazione di email e password non è corretta.
-						</div>
-						<input type="submit" class="btn btn-dark" value="Login"/>
+						<error-component v-if="error" v-bind:msg="error" />
+						<input type="submit" class="btn text-white primary-color" value="Login"/>
 					</form><br>
 					<small>
 						Ti serve un nuovo account? <router-link to="/register">Registrati</router-link>.
@@ -32,11 +30,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import ErrorComponent from '../components/ErrorComponent';
 import PageHeader from '../components/PageHeader';
 
 export default {
 	name: 'Login',
 	components: {
+		ErrorComponent,
 		PageHeader
 	},
 	data(){
@@ -52,16 +52,7 @@ export default {
 				email: this.email,
 				password: this.password
 			}
-			this.login(user)
-			.then(res => {
-				if(res.data.success){
-					this.$router.push('/dashboard/user')
-				}/*else{
-
-				}*/
-			}).catch(err => {
-				console.log(err);
-			});
+			this.login(user);
 		}
 	},
 	computed: {

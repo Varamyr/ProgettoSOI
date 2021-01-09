@@ -1,15 +1,15 @@
 <template>
-	<div id="admin">\
+	<div id="shippings">
 		<page-header/>
-		Profilo admin
+		Spedizioni
 	</div>
 </template>
 
 <script>
-import PageHeader from '../../components/PageHeader.vue'
+import PageHeader from '../../../components/PageHeader.vue'
 
 export default {
-	name: 'admin',
+	name: 'shippings',
 	components: {
 		PageHeader
 	}
