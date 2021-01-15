@@ -46,6 +46,12 @@ app.use('/api/auth', auth);
 const userDashboard = require('./routes/api/dashboard/user');
 app.use('/api/dashboard/user', userDashboard);
 
+const vendorDashboard = require('./routes/api/dashboard/vendor');
+app.use('/api/dashboard/vendor', vendorDashboard);
+
+const adminDashboard = require('./routes/api/dashboard/admin');
+app.use('/api/dashboard/admin', adminDashboard);
+
 //Gestisco i file in produzione
 if(process.env.NODE_ENV === 'production'){
 	//Static folder

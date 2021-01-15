@@ -1,18 +1,23 @@
 const express = require("express");
 const mongodb = require("mongodb");
+const passport = require('passport');
 
 const router = express.Router();
 
 //Get items on sale
 
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('vendor-rule', { 
+	session : false 
+}), async (req, res) => {
     const articles = await getItemsCollection();
 
     res.send(await articles.find({}).toArray());
 });
 
 //Post items on sale
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('vendor-rule', { 
+	session : false 
+}), async (req, res) => {
     const articles = await getItemsCollection();
 
     await articles.insertOne({
@@ -29,7 +34,9 @@ router.post('/', async (req, res) => {
 });
 
 //Delete items on sale
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', passport.authenticate('vendor-rule', { 
+	session : false 
+}), async (req, res) => {
 	const articles = await getItemsCollection();
 
 	await articles.deleteOne({_id : new mongodb.ObjectID(req.params.id)});

@@ -12,7 +12,7 @@ const User = require('../../../model/User');
  * @access Private
  */
 
-router.get('/', passport.authenticate('jwt', { 
+router.get('/', passport.authenticate('user-rule', { 
 	session : false 
 }), (req, res) => {
 	console.log('eccomi');

@@ -12,7 +12,7 @@ const Vendor = require('../../../model/Vendor');
  * @access Admin
  */
 
-router.post('/insertVendor', passport.authenticate('jwt', { 
+router.post('/insertVendor', passport.authenticate('admin-rule', { 
 	session : false 
 }), (req, res) => {
 	console.log('eccomi');
