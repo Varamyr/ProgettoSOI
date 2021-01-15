@@ -22,7 +22,6 @@ const getters = {
 		return !!state.token;
 	}, //in javascript la stringa vuota si valuta come falsa
 	getUserType: function(state){
-		console.log(state.getUserType);
 		return state.userType;
 	},
 	authState: state => {
@@ -73,11 +72,14 @@ const actions = {
 		}
 		return res;
 	},
-	async logout({commit}){
+	async logout({commit, dispatch}){
 		await localStorage.removeItem('token');
 		await localStorage.removeItem('user_type');
 		commit('logout');
 		delete axios.defaults.headers.common['Authorization'];
+
+		dispatch('clearCartItems', { root: true });
+
 		router.push('/');
 		return;
 	},

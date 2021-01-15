@@ -15,7 +15,7 @@
 
 		<!-- Utente loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='user'">
-			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce</h3> </router-link>
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area Privata</h3> </router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -27,9 +27,54 @@
 				<div class="nav-item">
 					<router-link class="nav-link" to="/dashboard/user/shippings"><h5 class="pages">Spedizioni</h5></router-link>
 				</div>
-				<div class="nav-item">
-					<router-link  class="nav-link" to="/dashboard/user/cart"> <h5 class="pages"> Carrello</h5></router-link>
-				</div>					
+				<div class="dropdown open">
+					<a
+					role="button"
+					class="btn btn-secondary dropdown-toggle cart"
+					id="triggerId"
+					data-toggle="dropdown"
+					aria-haspopup="true"
+					aria-expanded="false"
+					>{{ cartItemCount }} Carrello</a>
+					<div @click="$event.stopPropagation()">
+						<shopping-cart />
+					</div>
+					
+				</div>
+			</div>
+
+			<div class="navbar-nav ml-auto">
+				<a href="/logout" class="nav-link" @click.prevent="logoutUser"> <h5><b-icon-person-x/> Logout</h5> </a>
+			</div>
+			</b-collapse>
+		</b-navbar>
+
+		<!-- Vendor loggato -->
+		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='vendor'">
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area di amministrazione</h3> </router-link>
+
+			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+			<b-collapse id="nav-collapse" is-nav>
+			<div class="navbar-nav">
+				
+			</div>
+
+			<div class="navbar-nav ml-auto">
+				<a href="/logout" class="nav-link" @click.prevent="logoutUser"> <h5><b-icon-person-x/> Logout</h5> </a>
+			</div>
+			</b-collapse>
+		</b-navbar>
+
+		<!-- Admin loggato -->
+		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='admin'">
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area di amministrazione</h3> </router-link>
+
+			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+			<b-collapse id="nav-collapse" is-nav>
+			<div class="navbar-nav">
+				
 			</div>
 
 			<div class="navbar-nav ml-auto">
@@ -42,9 +87,13 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import ShoppingCart from './ShoppingCart.vue'
 
 export default {
 	name: 'PageHeader',
+	components: {
+		ShoppingCart
+	},
 	methods: {
 		...mapActions(["logout"]),
 		logoutUser() {
@@ -53,6 +102,7 @@ export default {
 	},
 	computed:{
 		...mapGetters(["isLogged"]),
+		...mapGetters(["cartItemCount"]),
 		...mapGetters(["getUserType"])
 	}
 }
@@ -87,5 +137,9 @@ a{
 
 h4.pages{
 	color: rgb(255, 255, 255);
+}
+
+a.cart{
+	font-size: 18px;
 }
 </style>
