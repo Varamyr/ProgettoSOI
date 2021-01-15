@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //Creo il modello dell'utente
-const UserSchema = new Schema({
+const VendorSchema = new Schema({
 	email: {
 		type: String,
 		required: true,
@@ -35,7 +35,21 @@ const UserSchema = new Schema({
 	phone: {
 		type: String,
 		required: false
+	},
+	pIva: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	rating: {
+		type: Number,
+		required: false
+	},
+	businessName: {
+		type: String,
+		required: true,
+		unique: true
 	}
 });
 
-module.exports = User = mongoose.model('users', UserSchema);
+module.exports = Vendor = mongoose.model('vendors', VendorSchema);
