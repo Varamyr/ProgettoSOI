@@ -51,7 +51,7 @@
 
 		<!-- Vendor loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='vendor'">
-			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area di amministrazione</h3> </router-link>
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area venditore</h3> </router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

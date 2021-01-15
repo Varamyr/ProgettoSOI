@@ -21,6 +21,4 @@ router.get('/', passport.authenticate('user-rule', {
 	});
 });
 
-
-
 module.exports = router;

@@ -41,7 +41,6 @@ router.delete('/:id', passport.authenticate('vendor-rule', {
 
 	await articles.deleteOne({_id : new mongodb.ObjectID(req.params.id)});
 	res.status(200).send();
-
 });
 
 

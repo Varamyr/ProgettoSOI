@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
 			msg: "Completa tutti i campi prima di proseguire."
 		});
 	}else{
-		if(email.lenght > 50 || password.lenght > 50 || confirmPassword.lenght > 50 || name.lenght > 50 || surname.lenght > 50 || address.lenght > 50 || city.lenght > 50 || province.lenght > 50 || phone.lenght > 50){
+		if(email.length > 50 || password.length > 50 || confirmPassword.length > 50 || name.length > 50 || surname.length > 50 || address.length > 50 || city.length > 50 || province.length > 50 || phone.length > 50){
 			return res.status(404).json({
 				msg: "Alcuni dei campi non rispettano la lunghezza massima consentita (50 caratteri)."
 			});
