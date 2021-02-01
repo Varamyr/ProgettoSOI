@@ -21,4 +21,34 @@ router.get('/', passport.authenticate('user-rule', {
 	});
 });
 
+/**
+ * @route GET api/dashboard/user/payout
+ * @desc Completo l'acquisto di un serie di articoli
+ * @access Private
+ */
+
+/*
+Mi aspetto un payload del tipo
+{
+	userid
+	cart: [
+		{
+			articleid
+			sellerid
+			quantity
+		},
+		{
+			...
+		},
+		...
+	]
+}
+Gli articoli con stesso id vengono raggruppati in un oggetto unico.
+*/
+router.post('/payout', passport.authenticate('user-rule', { 
+	session : false 
+}), (req, res) => {
+
+});
+
 module.exports = router;

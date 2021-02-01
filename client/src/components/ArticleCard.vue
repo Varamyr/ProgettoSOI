@@ -15,7 +15,7 @@
 						{{article.description}}
 					</b-card-text>
 					<b-card-text>
-						Venditore: {{article.sellerid}}
+						Venditore: {{article.sellerName}}
 					</b-card-text>
 				</b-col>
 			</div>

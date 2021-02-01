@@ -23,11 +23,11 @@ const token = localStorage.getItem("token");
 if(token){
 	Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
 
-	var base64Url = token.replace('Bearer ','').split('.')[1];
+	/*var base64Url = token.replace('Bearer ','').split('.')[1];
 	var base64 = base64Url.replace('-', '+').replace('_', '/');
 	var user = JSON.parse(atob(base64)).type;
 
-	localStorage.setItem('userType', user);
+	localStorage.setItem('userType', user);*/
 }
 
 // Install BootstrapVue

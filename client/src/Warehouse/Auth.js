@@ -4,7 +4,6 @@ import router from '../router';
 
 const state = {
 	token: localStorage.getItem('token') || '',
-	userType: localStorage.getItem('userType') || '',
 	user:{},
 	status: '',
 	error: ''
@@ -22,7 +21,10 @@ const getters = {
 		return !!state.token;
 	}, //in javascript la stringa vuota si valuta come falsa
 	getUserType: function(state){
-		return state.userType;
+		var base64Url = state.token.replace('Bearer ','').split('.')[1];
+		var base64 = base64Url.replace('-', '+').replace('_', '/');
+		var user = JSON.parse(atob(base64)).type;
+		return user;
 	},
 	authState: state => {
 		return state.status;
@@ -43,13 +45,11 @@ const actions = {
 			if(res.data.success){
 				const token = res.data.token;
 				const user = res.data.user;
-				const userType = res.data.type;
 
 				//Salvo il token e l'userType nel localStorage
 				await localStorage.setItem("token", token);
-				await localStorage.setItem("userType", userType);
 
-				const params = {token, user, userType}
+				const params = {token, user}
 				//Aggiorno l'header delle richieste mandate da axios mettendo il token dell'autenticazione
 				commit('auth_success', params);
 				axios.defaults.headers.common["Authorization"] = token;
@@ -78,6 +78,7 @@ const actions = {
 		commit('logout');
 		delete axios.defaults.headers.common['Authorization'];
 
+		//Dispatch serve per chiamare altre action all'interno dello store
 		dispatch('clearCartItems', { root: true });
 
 		router.push('/');
@@ -103,7 +104,6 @@ const mutations = {
 		state.user = params.user
 		state.error = null
 		state.status = 'success'
-		state.userType = params.userType
 	},
 	auth_failed(state, err){
 		state.error = err.response.data.msg
@@ -125,7 +125,6 @@ const mutations = {
 		state.status = ''
 		state.error = null
 		state.user = {}
-		state.user_type = ''
 	},
 	profile_request(state) {
 		state.status = 'loading'
