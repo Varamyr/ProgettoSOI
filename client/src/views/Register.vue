@@ -177,7 +177,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import PageHeader from '../components/PageHeader.vue';
+import PageHeader from '../components/ui/PageHeader.vue';
 
 export default {
 	name: 'Register',

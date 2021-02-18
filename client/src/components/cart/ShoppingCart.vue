@@ -28,7 +28,7 @@
 		</div>
 		<div v-if="cartItemCount > 0">
 			<br/>
-			<button type="button"  class="btn primary-color text-white w-100"><b-icon-cart/> Completa acquisto</button>
+			<button type="button" @click.prevent="checkout()" class="btn primary-color text-white w-100"><b-icon-cart/> Completa acquisto</button>
 		</div>
 		</div>
 </template>
@@ -45,7 +45,23 @@ export default {
   },
   methods: {
 	...mapActions(["removeArticleFromCart"]),
-	...mapActions(["clearCartItems"])
+	...mapActions(["clearCartItems"]),
+	...mapActions(["checkoutItems"]),
+	...mapActions(["addNotification"]),
+	checkout(){
+			this.checkoutItems()
+			.then(
+				res => {
+					if(res.data.success){
+						this.addNotification({type:"Successo", message:"L'ordine è stato inoltrato con successo."});
+					}
+				}
+			)
+			.catch(
+				() => {
+					this.addNotification({type:"Errore", message:"Attenzione: l'ordine non è stato inoltrato a causa di un errore. Riprova."});
+			});
+		}
   }
 };
 </script>

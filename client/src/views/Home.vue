@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import ArticlesComponent from '../components/ArticleComponent'
-import PageHeader from '../components/PageHeader.vue'
+import ArticlesComponent from '../components/articles/ArticleComponent'
+import PageHeader from '../components/ui/PageHeader.vue'
 
 export default {
 	name: 'Home',

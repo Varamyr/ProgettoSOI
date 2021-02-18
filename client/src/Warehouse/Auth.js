@@ -26,11 +26,17 @@ const getters = {
 		var user = JSON.parse(atob(base64)).type;
 		return user;
 	},
+	getToken: state => {
+		return state.token;
+	},
 	authState: state => {
 		return state.status;
 	},
 	user: state => {
 		return state.user;
+	},
+	userId: state => {
+		return state.user._id;
 	},
 	error: state => state.error
 };
@@ -41,7 +47,7 @@ const actions = {
 		commit('auth_request');
 		try{
 			let res = await axios.post('/api/auth/login', user);
-		
+			
 			if(res.data.success){
 				const token = res.data.token;
 				const user = res.data.user;

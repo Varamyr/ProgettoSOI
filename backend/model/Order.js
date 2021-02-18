@@ -27,6 +27,18 @@ const ShippingSchema = new Schema({
 	arrived:{
 		type : Boolean,
 		required : true
+	},
+	paidDate:{
+		type: Date,
+		required: true
+	},
+	shippedDate:{
+		type: Date,
+		required: false
+	},
+	arrivedDate:{
+		type: Date,
+		required: false
 	}
 });
 

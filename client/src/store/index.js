@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Auth from '../Warehouse/Auth'
 import ArticleService from '../Warehouse/ArticleService'
+import OrderService from '../Warehouse/OrderService'
 import Cart from '../Warehouse/Cart'
+import Notifications from '../Warehouse/Notifications'
 
 Vue.use(Vuex)
 
@@ -18,6 +20,8 @@ export default new Vuex.Store({
 	modules: {
 		Auth,
 		ArticleService,
-		Cart
+		Cart,
+		Notifications,
+		OrderService
 	}
 })

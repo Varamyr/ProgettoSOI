@@ -16,7 +16,9 @@
 							<label for="loginPassword">Password</label>
 							<input type="password" class="form-control" id="loginPassword" placeholder="Inserisci qui la tua password" v-model="password">
 						</div><br>
+						<!-- Box in cui far vedere l'errore -->
 						<error-component v-if="error" v-bind:msg="error" />
+						
 						<input type="submit" class="btn text-white primary-color" value="Login"/>
 					</form><br>
 					<small>
@@ -30,8 +32,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ErrorComponent from '../components/ErrorComponent';
-import PageHeader from '../components/PageHeader';
+import ErrorComponent from '../components/ui/ErrorComponent';
+import PageHeader from '../components/ui/PageHeader';
 
 export default {
 	name: 'Login',

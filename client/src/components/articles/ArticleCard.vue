@@ -3,16 +3,16 @@
 		<b-card
 		no-body
 		class="m-2"
-		style="max-width: 450px; min-width:450px"
+		style="max-width: 650px; min-width:450px"
 		>
 			<div class="row h-100">
 				<b-col sm="6" class="card-image-container">
-					<b-img class="h-100 embed-responsive" style="object-fit: cover;" fluid src="https://images.everyeye.it/img-notizie/nvidia-geforce-rtx-3090-3080-3070-trapelano-specifiche-prezzi-v3-465276.jpg" alt="Image 1"></b-img>
+					<b-img class="h-100 embed-responsive" style="object-fit: cover; " fluid :src="article.photo" alt="Image 1"></b-img>
 				</b-col>
-				<b-col sm="6" class="py-3 card-description">
+				<b-col sm="6" class="p-4 card-description">
 					<h4>{{article.name}}</h4>
-					<b-card-text>
-						{{article.description}}
+					<b-card-text class=" text-left" style="overflow-y:auto; height:150px;">
+						<small>{{article.description}}</small>
 					</b-card-text>
 					<b-card-text>
 						Venditore: {{article.sellerName}}
@@ -52,11 +52,13 @@ export default {
 	props: ["article"],
 	methods: {
 		...mapActions(["addArticleToCart"]),
+		...mapActions(["addNotification"]),
 		addToCart() {
-      this.addArticleToCart({
-			article: this.article,
-			quantity: 1
-		});
+			this.addArticleToCart({
+				article: this.article,
+				quantity: 1
+			});
+			this.addNotification({type:"Successo", message: "L'articolo è stato aggiunto al carrello."});
 		}
 	},
 	computed:{
@@ -67,7 +69,8 @@ export default {
 </script>
 
 <style scoped>
-	.card{
+.card{
+	display: inline-block;
 	border:0;
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 }
@@ -85,8 +88,5 @@ h4.price{
 	width: 100%;
 }
 
-.card-description{
-	padding-right: 30px;
-	padding-left:0;
-}
+
 </style>

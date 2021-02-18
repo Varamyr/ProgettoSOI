@@ -39,14 +39,6 @@ const routes = [
 		}
 	},
 	{
-		path: '/dashboard/user/cart',
-		name: 'UserShoppingCart',
-		component: () => import('../views/dashboard/user/UserShoppingCart.vue'),
-		meta:{
-			requiresAuthUser: true
-		}
-	},
-	{
 		path: '/dashboard/user/shippings',
 		name: 'UserShippings',
 		component: () => import('../views/dashboard/user/UserShippings.vue'),

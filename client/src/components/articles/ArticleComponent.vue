@@ -1,8 +1,10 @@
 <template>
-	<div class="container">
+	<div >
 		<h1>Articoli in vendita</h1>
 		<!-- Creare gli articoli qui-->
 		<hr>
+		<article-filter/>
+		<hr/>
 		<p class="error" v-if="error">{{error}}</p>
 		<div class="articles-container">
 			<div class="card-group" style="justify-content:center;">
@@ -19,12 +21,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ArticleCard from './ArticleCard.vue';
+import ArticleCard from './ArticleCard';
+import ArticleFilter from './ArticleFilter.vue';
 
 export default {
 	name: 'ArticleComponent',
 	components:{
-		ArticleCard
+		ArticleCard,
+		ArticleFilter
 	},
 	data() {
 		return {
@@ -60,7 +64,6 @@ export default {
 
 <style scoped>
 div.container {
-	max-width: 1000px;
 	min-width: 400px;
 	margin: 0 auto;
 }
@@ -71,4 +74,5 @@ p.error{
 	margin-bottom: 15px;
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 }
+
 </style>

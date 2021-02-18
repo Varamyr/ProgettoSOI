@@ -2,7 +2,7 @@
 	<div class="headerContainer">
 		<!-- Utente non loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="!isLogged">
-			<router-link to="/" class="navbar-brand not-logged" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce</h3> </router-link>
+			<router-link to="/" class="navbar-brand not-logged" > <h3><img class="appLogo" alt="Vue logo" src="../../assets/logo.png" > Hello E-commerce</h3> </router-link>
 			
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -15,7 +15,7 @@
 
 		<!-- Utente loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='user'">
-			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area Privata</h3> </router-link>
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../../assets/logo.png" > Hello E-commerce - Area Privata</h3> </router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -51,7 +51,7 @@
 
 		<!-- Vendor loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='vendor'">
-			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area venditore</h3> </router-link>
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../../assets/logo.png" > Hello E-commerce - Area venditore</h3> </router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -68,7 +68,7 @@
 
 		<!-- Admin loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='admin'">
-			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../assets/logo.png" > Hello E-commerce - Area di amministrazione</h3> </router-link>
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../../assets/logo.png" > Hello E-commerce - Area di amministrazione</h3> </router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -87,7 +87,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import ShoppingCart from './ShoppingCart.vue'
+import ShoppingCart from '../cart/ShoppingCart'
 
 export default {
 	name: 'PageHeader',
@@ -121,6 +121,8 @@ export default {
 {
 	padding-top:20px;
 	box-shadow: 0px 5px 10px black;
+	
+	min-width: 567px;
 }
 
 .dropdown-item{

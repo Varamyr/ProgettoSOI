@@ -150,7 +150,7 @@ router.post('/login', (req, res) => {
 		email, 
 		password
 	} = req.body;
-
+	
    if(email=='' || password==''){
 		return res.status(404).json({
 			msg: "Completa tutti i campi prima di proseguire.",

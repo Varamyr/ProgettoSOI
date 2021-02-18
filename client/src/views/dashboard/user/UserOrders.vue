@@ -1,17 +1,24 @@
 <template>
-	<div id="orders">
+	<div id="orders" class="container">
 		<page-header/>
-		Ordini conclusi
+		<h1>Storico ordini</h1>
+		<hr/>
+		<old-orders-component/>
+		<notification-component/>
 	</div>
 </template>
 
 <script>
-import PageHeader from '../../../components/PageHeader.vue'
+import OldOrdersComponent from '../../../components/oldOrders/OldOrdersComponent.vue'
+import NotificationComponent from '../../../components/ui/notifications/NotificationComponent.vue'
+import PageHeader from '../../../components/ui/PageHeader.vue'
 
 export default {
 	name: 'orders',
 	components: {
-		PageHeader
+		PageHeader,
+		OldOrdersComponent,
+		NotificationComponent
 	}
 }
 </script>
