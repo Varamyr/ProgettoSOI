@@ -96,8 +96,11 @@ export default {
 	},
 	methods: {
 		...mapActions(["logout"]),
+		...mapActions(["addNotification"]),
 		logoutUser() {
-			this.logout();
+			this.logout().then(() => {
+				this.addNotification({type: 'Logout riuscito', message: 'Logout effettuato con successo.'})
+			});
 		}
 	},
 	computed:{

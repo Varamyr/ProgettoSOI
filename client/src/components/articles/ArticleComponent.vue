@@ -5,7 +5,6 @@
 		<hr>
 		<article-filter/>
 		<hr/>
-		<p class="error" v-if="error">{{error}}</p>
 		<div class="articles-container">
 			<div class="card-group" style="justify-content:center;">
 				<article-card 
@@ -15,12 +14,13 @@
 				v-bind:article="article"
 				/>
 			</div>
+			<div v-if="articles.length == 0">La ricerca con questi parametri ha prodotto 0 risultati.</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import ArticleCard from './ArticleCard';
 import ArticleFilter from './ArticleFilter.vue';
 
@@ -30,12 +30,6 @@ export default {
 		ArticleCard,
 		ArticleFilter
 	},
-	data() {
-		return {
-			articles: [],
-			error : ''
-		}
-	},
 	methods: {
 		...mapActions(["getArticles"]),
 		loadArticles(){
@@ -43,7 +37,8 @@ export default {
 			.then(
 				res => {
 					if(res.data.success){
-						this.articles = res.data.articles
+
+						//this.articles = res.data.articles
 					}
 				}
 			)
@@ -57,7 +52,10 @@ export default {
 		this.loadArticles();
 	},
 	computed: {
-		...mapGetters(["articlesError"])
+		...mapGetters(["articlesError"]),
+		...mapState({
+			articles: state => state.ArticleService.filtered
+		})
 	}
 }
 </script>

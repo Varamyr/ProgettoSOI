@@ -16,6 +16,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
 
 	Article.find({})
+	.sort({price: 'asc'})
 	.then( articles => {
 		if(articles.length > 0){
 			//Devo ottenere il nome dell'attività del venditore dell'articolo

@@ -61,7 +61,7 @@ const actions = {
 				axios.defaults.headers.common["Authorization"] = token;
 				router.push('/dashboard/user');
 			}
-			return;
+			return res;
 		}catch(err){
 			commit('auth_failed', err);
 		}

@@ -49,12 +49,15 @@ export default {
 	},
 	methods: {
 		...mapActions(['login']),
+		...mapActions(['addNotification']),
 		loginUser(){
 			let user = {
 				email: this.email,
 				password: this.password
 			}
-			this.login(user);
+			this.login(user).then(() => {
+				this.addNotification({type: 'Login riuscito', message: 'Bentornato!'});
+			});
 		}
 	},
 	computed: {

@@ -7,7 +7,7 @@
 		>
 			<div class="row h-100">
 				<b-col sm="6" class="card-image-container">
-					<b-img class="h-100 embed-responsive" style="object-fit: cover; " fluid :src="article.photo" alt="Image 1"></b-img>
+					<b-img class="h-100 embed-responsive" style="object-fit: cover;" fluid :src="article.photo" alt="Image 1"></b-img>
 				</b-col>
 				<b-col sm="6" class="p-4 card-description">
 					<h4>{{article.name}}</h4>
@@ -24,7 +24,7 @@
 					<div class="row h-100">
 						<div class="col-md-6">
 							<b-card-text>
-								Prezzo: <h4 class="price">{{article.price}} $</h4>
+								Prezzo: <h4 class="price">{{article.price}} €</h4>
 							</b-card-text>
 						</div>
 						<div class="col-md-6">
