@@ -92,7 +92,7 @@ const mutations = {
 				}else{
 					newValue = parseInt(newValue);
 				}
-				if(state.filters.minPrice != newValue && (newValue <= state.filters.maxPrice || state.filters.maxPrice == -1)){
+				if(state.filters.minPrice != newValue && (newValue <= state.filters.maxPrice || state.filters.maxPrice == -1 || newValue == -1)){
 					somethingChanged = true;
 					state.filters.minPrice = newValue;
 				}
@@ -103,7 +103,7 @@ const mutations = {
 				}else{
 					newValue = parseInt(newValue);
 				}
-				if(state.filters.maxPrice != newValue && (state.filters.minPrice <= newValue || state.filters.minPrice == -1) ){
+				if(state.filters.maxPrice != newValue && (state.filters.minPrice <= newValue || state.filters.minPrice == -1 || newValue == -1) ){
 					somethingChanged = true;
 					state.filters.maxPrice = newValue;
 				}
@@ -114,20 +114,18 @@ const mutations = {
 		
 		//Aggiornamento elementi filtrati da visualizzare
 		if(somethingChanged){
-			if(type == 'orderby'){
-				state.filtered.sort(function (a, b) {
-					if(newValue == 'desc')
-						return b.price - a.price;
-					else
-						return a.price - b.price;
-				})
-			}else{
-				state.filtered = state.articles.filter(
-					element => {
-						return ((element.category == state.filters.category || state.filters.category == null) && (element.price >= state.filters.minPrice || state.filters.minPrice == -1) && (element.price <= state.filters.maxPrice || state.filters.maxPrice == -1))
-					}	
-				);
-			}
+			
+			state.filtered = state.articles.filter(
+				element => {
+					return ((element.category == state.filters.category || state.filters.category == null) && (element.price >= state.filters.minPrice || state.filters.minPrice == -1) && (element.price <= state.filters.maxPrice || state.filters.maxPrice == -1))
+				}	
+			);
+			state.filtered.sort(function (a, b) {
+				if(newValue == 'desc')
+					return b.price - a.price;
+				else
+					return a.price - b.price;
+			});
 		}
 	},
 	filters_cleared(state){

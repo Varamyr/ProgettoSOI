@@ -1,5 +1,5 @@
 <template>
-	<div aria-live="polite" aria-atomic="true" style="position: fixed; left:0; bottom: 0; width:100%; min-height:200px;">
+	<div aria-live="polite" aria-atomic="true" style="position: fixed; left:0; bottom: 0; width:100%; min-height:200px; pointer-events: none;">
 		<!-- Positioning -->
 		<div style="position: fixed; bottom: 25px; right: 0; margin-right: 25px;">
 			<!-- Notifications -->
