@@ -223,7 +223,7 @@ export default {
 
 <style scoped>
 .card{
-	margin-top: 10%;
+	margin-top:25px;
 	border: 0;
 	min-width: 500px;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);

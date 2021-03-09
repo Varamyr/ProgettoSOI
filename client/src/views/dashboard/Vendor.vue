@@ -1,17 +1,22 @@
 <template>
 	<div id="vendor">
 		<page-header/>
-		Profilo vendor
+		<showcase-component/>
+		<notification-component/>
 	</div>
 </template>
 
 <script>
+import ShowcaseComponent from '../../components/articles/ShowcaseComponent.vue'
+import NotificationComponent from '../../components/ui/notifications/NotificationComponent.vue'
 import PageHeader from '../../components/ui/PageHeader.vue'
 
 export default {
 	name: 'vendor',
 	components: {
-		PageHeader
+		PageHeader,
+		NotificationComponent,
+		ShowcaseComponent
 	}
 }
 </script>

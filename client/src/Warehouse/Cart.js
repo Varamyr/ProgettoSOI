@@ -68,15 +68,16 @@ const actions = {
 				let res = await axios.post('/api/dashboard/user/checkout/', req);
 				
 				if(res.data.success){
-					
 					commit('checkout_success');
 
 					dispatch('clearCartItems');
+					dispatch('getArticles', {root: true});
 				}
 				return res;
 			}catch(err){
 				commit('checkout_failed', err);
-			}			
+				throw err;
+			}
 		}
 	}
 }

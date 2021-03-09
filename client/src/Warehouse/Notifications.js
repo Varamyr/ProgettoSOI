@@ -11,6 +11,9 @@ const actions = {
 	},
 	removeNotification: ({ commit }, notificationID) => {
 		commit('remove_notification', notificationID);
+	},
+	clearNotifications: ({ commit }, notificationID) => {
+		commit('clear_notifications', notificationID);
 	}
 };
 
@@ -35,6 +38,9 @@ const mutations = {
 		if (found) {
 			state.notificationList.splice(findex, 1);
 		}
+	},
+	clear_notifications: (state) => {
+		state.notificationList = []
 	}
 };
 

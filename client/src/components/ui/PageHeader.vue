@@ -51,13 +51,18 @@
 
 		<!-- Vendor loggato -->
 		<b-navbar class="header" fixed="top" toggleable="lg" type="dark" variant="dark" v-if="isLogged && getUserType=='vendor'">
-			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../../assets/logo.png" > Hello E-commerce - Area venditore</h3> </router-link>
+			<router-link to="/" class="navbar-brand link" > <h3><img class="appLogo" alt="Vue logo" src="../../assets/logo.png" > Hello E-commerce - Negozio</h3> </router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
 			<b-collapse id="nav-collapse" is-nav>
 			<div class="navbar-nav">
-				
+				<div class="nav-item">
+					<router-link class="nav-link" to="/dashboard/vendor/orders"><h5 class="pages">Ordini</h5></router-link>
+				</div>
+				<div class="nav-item">
+					<router-link class="nav-link" to="/dashboard/vendor/shippings"><h5 class="pages">Spedizioni</h5></router-link>
+				</div>
 			</div>
 
 			<div class="navbar-nav ml-auto">

@@ -49,6 +49,10 @@ const VendorSchema = new Schema({
 		type: String,
 		required: true,
 		unique: true
+	},
+	authorized: {
+		type: Boolean,
+		required: true
 	}
 });
 

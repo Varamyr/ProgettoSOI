@@ -32,6 +32,10 @@ const ArticleSchema = new Schema({
 	sellerid: {
 		type: ObjectID,
 		required: true
+	},
+	visible:{
+		type: Boolean,
+		required: true
 	}
 });
 

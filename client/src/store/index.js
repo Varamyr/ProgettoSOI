@@ -5,6 +5,7 @@ import ArticleService from '../Warehouse/ArticleService'
 import OrderService from '../Warehouse/OrderService'
 import Cart from '../Warehouse/Cart'
 import Notifications from '../Warehouse/Notifications'
+import AdministrativeService from '../Warehouse/AdministrativeService'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
 		ArticleService,
 		Cart,
 		Notifications,
-		OrderService
+		OrderService,
+		AdministrativeService
 	}
 })

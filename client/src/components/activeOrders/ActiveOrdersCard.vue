@@ -8,9 +8,7 @@
 			paidDate: order.paidDate,
 			shippedDate: order.shippedDate -->
 	<div class="row">
-		<div
-		class="card m-2"
-		>
+		<div class="card m-2">
 			<div class="card-header">
 				<div class="row">
 					<div class="col card-text">
@@ -35,7 +33,28 @@
 				:article="article"
 				:class="{'border-bottom' : index < order.articles.length-1}">
 			</active-orders-card-row>
-			
+			<div 
+			v-if="isLogged && getUserType=='vendor'" 
+			class="card-footer text-muted">
+				<div class="row">
+					<div class="col"><h4>Dati per la spedizione</h4></div>
+				</div>
+				<div class="row">
+					<div class="col">
+						Nome: <b>{{order.userName}}</b><br>
+						Cognome: <b>{{order.userSurname}}</b>
+					</div>
+					<div class="col">
+						Indirizzo: <b>{{order.userAddress}}</b><br>
+						Citta: <b>{{order.userCity}}</b><br>
+						Provincia: <b>{{order.userProvince}}</b><br>
+					</div>
+					<div class="col">
+						Contatto email: <b>{{order.userMail}}</b><br>
+						Contatto telefonico: <b>{{order.userPhone}}</b><div v-if="order.userPhone.length==0"><b>Non fornito</b></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -43,10 +62,15 @@
 
 <script>
 import ActiveOrdersCardRow from './ActiveOrdersCardRow';
+import {mapGetters} from 'vuex';
 export default {
 	props: ["order"],
 	components:{
 		ActiveOrdersCardRow
+	},
+	computed:{
+		...mapGetters(['getUserType']),
+		...mapGetters(['isLogged'])
 	},
 	created() {
 	}

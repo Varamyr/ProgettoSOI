@@ -58,8 +58,8 @@ export default {
 				}
 			)
 			.catch(
-				() => {
-					this.addNotification({type:"Errore", message:"Attenzione: l'ordine non è stato inoltrato a causa di un errore. Riprova."});
+				err => {
+					this.addNotification({type:"Errore", message:err.response.data.msg});
 			});
 		}
   }

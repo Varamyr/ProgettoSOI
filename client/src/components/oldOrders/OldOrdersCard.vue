@@ -35,20 +35,44 @@
 				:article="article"
 				:class="{'border-bottom' : index < order.articles.length-1}">
 			</old-orders-card-row>
-			
+			<div 
+			v-if="isLogged && getUserType=='vendor'" 
+			class="card-footer text-muted">
+				<div class="row">
+					<div class="col"><h4>Spedito a</h4></div>
+				</div>
+				<div class="row">
+					<div class="col">
+						Nome: <b>{{order.userName}}</b><br>
+						Cognome: <b>{{order.userSurname}}</b>
+					</div>
+					<div class="col">
+						Indirizzo: <b>{{order.userAddress}}</b><br>
+						Citta: <b>{{order.userCity}}</b><br>
+						Provincia: <b>{{order.userProvince}}</b><br>
+					</div>
+					<div class="col">
+						Contatto email: <b>{{order.userMail}}</b><br>
+						Contatto telefonico: <b>{{order.userPhone}}</b><div v-if="order.userPhone.length==0"><b>Non fornito</b></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import OldOrdersCardRow from './OldOrdersCardRow';
 export default {
 	props: ["order"],
 	components:{
 		OldOrdersCardRow
 	},
-	created() {
+	computed:{
+		...mapGetters(['isLogged']),
+		...mapGetters(['getUserType'])
 	}
 }
 </script>

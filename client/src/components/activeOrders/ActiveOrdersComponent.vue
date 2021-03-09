@@ -27,8 +27,6 @@ export default {
 			.then(
 				res => {
 					if(res.data.success){
-						
-						
 						//this.orders = res.data.orderList;
 					}
 				}

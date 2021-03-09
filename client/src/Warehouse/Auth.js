@@ -1,6 +1,5 @@
 import axios from 'axios';
 import router from '../router';
-//import router from '../router/index'
 
 const state = {
 	token: localStorage.getItem('token') || '',
@@ -23,8 +22,8 @@ const getters = {
 	getUserType: function(state){
 		var base64Url = state.token.replace('Bearer ','').split('.')[1];
 		var base64 = base64Url.replace('-', '+').replace('_', '/');
-		var user = JSON.parse(atob(base64)).type;
-		return user;
+		var userType = JSON.parse(atob(base64)).type;
+		return userType;
 	},
 	getToken: state => {
 		return state.token;
@@ -32,25 +31,31 @@ const getters = {
 	authState: state => {
 		return state.status;
 	},
-	user: state => {
-		return state.user;
+	getUser: state => {
+		var base64Url = state.token.replace('Bearer ','').split('.')[1];
+		var base64 = base64Url.replace('-', '+').replace('_', '/');
+		return JSON.parse(atob(base64));
 	},
 	userId: state => {
-		return state.user._id;
+		var base64Url = state.token.replace('Bearer ','').split('.')[1];
+		var base64 = base64Url.replace('-', '+').replace('_', '/');
+		return JSON.parse(atob(base64))._id;
 	},
 	error: state => state.error
 };
 
 const actions = {
 	//Login action
-	async login({ commit }, user){
+	async login({ commit, getters, dispatch }, user){
 		commit('auth_request');
 		try{
 			let res = await axios.post('/api/auth/login', user);
 			
 			if(res.data.success){
 				const token = res.data.token;
-				const user = res.data.user;
+				var base64Url = token.replace('Bearer ','').split('.')[1];
+				var base64 = base64Url.replace('-', '+').replace('_', '/');
+				const user = JSON.parse(atob(base64));
 
 				//Salvo il token e l'userType nel localStorage
 				await localStorage.setItem("token", token);
@@ -59,7 +64,21 @@ const actions = {
 				//Aggiorno l'header delle richieste mandate da axios mettendo il token dell'autenticazione
 				commit('auth_success', params);
 				axios.defaults.headers.common["Authorization"] = token;
-				router.push('/dashboard/user');
+				
+				dispatch('clearNotifications', {root: true});
+				dispatch('deleteArticles', { root: true });
+				switch(getters.getUserType){
+					case 'user':
+						router.push('/dashboard/user');
+						break;
+					case 'vendor':
+						router.push('/dashboard/vendor');
+						break;
+					case 'admin':
+						router.push('/dashboard/admin');
+						break;
+				}
+				
 			}
 			return res;
 		}catch(err){
@@ -80,63 +99,51 @@ const actions = {
 	},
 	async logout({commit, dispatch}){
 		await localStorage.removeItem('token');
-		await localStorage.removeItem('user_type');
 		commit('logout');
 		delete axios.defaults.headers.common['Authorization'];
 
 		//Dispatch serve per chiamare altre action all'interno dello store
 		dispatch('clearCartItems', { root: true });
-
+		dispatch('clearNotifications', {root: true});
 		router.push('/');
 		return;
-	},
-	// Get the user Profile
-	async getProfile({ commit }) {
-			commit('profile_request');
-			let res = await axios.get('/api/dashboard/user');
-			commit('user_profile', res.data.user);
-			return res;
 	}
 };
 
 const mutations = {
 	auth_request(state){
-		state.error = null
-		state.status = 'loading'
+		state.error = null;
+		state.status = 'loading';
 	},
 	auth_success(state, params){
-		
-		state.token = params.token
-		state.user = params.user
-		state.error = null
-		state.status = 'success'
+		state.token = params.token;
+		state.user = params.user;
+		state.error = null;
+		state.status = 'success';
 	},
 	auth_failed(state, err){
-		state.error = err.response.data.msg
+		state.error = err.response.data.msg;
 	},
 	register_request(state){
-		state.error = null
-		state.status = 'loading'
+		state.error = null;
+		state.status = 'loading';
 	},
 	register_success(state){
-		state.error = null
-		state.status = 'success'
+		state.error = null;
+		state.status = 'success';
 	},
 	register_failed(state, err){
-		state.error = err.response.data.msg
-		state.status = 'error'
+		state.error = err.response.data.msg;
+		state.status = 'error';
 	},
 	logout(state){
-		state.token = ''
-		state.status = ''
-		state.error = null
-		state.user = {}
+		state.token = '';
+		state.status = '';
+		state.error = null;
+		state.user = {};
 	},
 	profile_request(state) {
-		state.status = 'loading'
-	},
-	user_profile(state, user) {
-		state.user = user
+		state.status = 'loading';
 	}
 };
 

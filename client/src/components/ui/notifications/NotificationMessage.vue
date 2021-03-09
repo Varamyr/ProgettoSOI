@@ -1,6 +1,6 @@
 <template>
 	
-	<div v-bind:id="notification.id" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">
+	<div v-bind:id="notification.id" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1500">
 		<div class="toast-header">
 			<strong class="mr-auto px-2">{{notification.type}}</strong>
 			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">

@@ -4,7 +4,7 @@
 		<div style="position: fixed; bottom: 25px; right: 0; margin-right: 25px;">
 			<!-- Notifications -->
 			
-			<notification-message
+			<notification-message style="pointer-events: auto;"
 				v-for="notification in notifications" 
 				:key="notification.id" 
 				:notification="notification" 
@@ -36,5 +36,4 @@ export default {
 </script>
 
 <style scoped>
-	
 </style>

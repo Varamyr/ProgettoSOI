@@ -16,7 +16,6 @@ const router = express.Router();
  * @access Public
  */
 
- //Todo: gestire l'unicità email nelle tre tabelle admin, vendor e utente
 router.post('/register', (req, res) => {
 	let { 
 		email, 
@@ -143,8 +142,6 @@ router.post('/register', (req, res) => {
 //IMPORTANTE: nel payload da restituire al client mettere sempre un campo type=user/vendor/admin
 //è necessario al client per gestire la navigazione nel router
 
- //TODO: ritornare user type
- //TODO: se non trovo l'utente in users controllare anche in vendors e admins
 router.post('/login', (req, res) => {
 	let { 
 		email, 
@@ -164,7 +161,7 @@ router.post('/login', (req, res) => {
 				Vendor.findOne({
 					email : req.body.email
 				}).then( vendor => {
-					if(!vendor){
+					if(!vendor || !vendor.authorized){
 						Admin.findOne({
 							email : req.body.email
 						}).then( admin => {

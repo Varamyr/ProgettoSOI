@@ -14,8 +14,7 @@ const router = express.Router();
  */
 
 router.get('/', (req, res) => {
-
-	Article.find({})
+	Article.find({ visible: true})
 	.sort({price: 'asc'})
 	.then( articles => {
 		if(articles.length > 0){
@@ -27,23 +26,24 @@ router.get('/', (req, res) => {
 				const payload = [];
 				articles.forEach( article => {
 					vendors.forEach( vendor => {
-						if(article.sellerid.equals(vendor._id)){
-							payload.push({
-								_id : article._id,
-								availability : article.availability,
-								price : article.price,
-								category : article.category,
-								description : article.description,
-								name : article.name,
-								photo : article.photo,
-								sellerid: vendor._id,
-								sellerName: vendor.businessName
-							});
-							return;
+						if(vendor.authorized){
+							if(article.sellerid.equals(vendor._id)){
+								payload.push({
+									_id : article._id,
+									availability : article.availability,
+									price : article.price,
+									category : article.category,
+									description : article.description,
+									name : article.name,
+									photo : article.photo,
+									sellerid: vendor._id,
+									sellerName: vendor.businessName
+								});
+								return;
+							}
 						}
 					})
 				});
-
 				return res.status(200).json({
 					articles: payload,
 					msg: payload.length+" articoli trovati.",

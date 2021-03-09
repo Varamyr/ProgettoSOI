@@ -63,6 +63,22 @@ const routes = [
 		}
 	},
 	{
+		path: '/dashboard/vendor/shippings',
+		name: 'VendorShippings',
+		component: () => import('../views/dashboard/vendor/VendorShippings.vue'),
+		meta:{
+			requiresAuthVendor: true
+		}
+	},
+	{
+		path: '/dashboard/vendor/orders',
+		name: 'VendorOrders',
+		component: () => import('../views/dashboard/vendor/VendorOrders.vue'),
+		meta:{
+			requiresAuthVendor: true
+		}
+	},
+	{
 		path: '/dashboard/admin',
 		name: 'AdminDashboard',
 		component: () => import('../views/dashboard/Admin.vue'),
@@ -90,8 +106,6 @@ const router = new VueRouter({
 //Utilizzo il campo meta per definire l'accessibilità delle varie pagine
 //to = pagina a cui voglio accedere, from = pagina da cui provengo, next = pagina che verrà restituita
 
-//TODO: adattare la navigazione per ogni user type in modo che gli utenti non accedano alle aree che 
-//non gli competono
 router.beforeEach((to, from, next) => {
 	if(to.matched.some(record => record.meta.requiresAuthUser)){
 		if(!store.getters.isLogged){

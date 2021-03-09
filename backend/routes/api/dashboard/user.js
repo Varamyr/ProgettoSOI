@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const key = require('../../../config/keys').secret;
 const passport = require('passport');
-const User = require('../../../model/User');
 const Order = require('../../../model/Order');
 const Article = require('../../../model/Article');
 const Vendor = require('../../../model/Vendor');
@@ -18,7 +14,6 @@ const Vendor = require('../../../model/Vendor');
 router.get('/', passport.authenticate('user-rule', { 
 	session : false 
 }), (req, res) => {
-	console.log('eccomi');
 	return res.json({
 		email: req.email
 	});
@@ -30,25 +25,7 @@ router.get('/', passport.authenticate('user-rule', {
  * @access Private
  */
 
-/*
-Mi aspetto un payload del tipo
-{
-	userid
-	cart: [
-		{
-			articleid
-			sellerid
-			quantity
-		},
-		{
-			...
-		},
-		...
-	]
-}
-Gli articoli con stesso id vengono raggruppati in un oggetto unico.
-*/
-router.post('/checkout', passport.authenticate('user-rule', { 
+router.post('/checkout', passport.authenticate('user-rule', {
 	session : false 
 }), (req, res) => {
 	//Ricevo il contenuto del carrello da client e salvo su database se non è vuoto
@@ -58,30 +35,79 @@ router.post('/checkout', passport.authenticate('user-rule', {
 	} = req.body;
 
 	if(cartItems.length > 0){
-		//TODO: controllare che la disponibilità non sia minore della richiesta
-		const now =  (new Date()).toUTCString();
-		cartItems.forEach(article => {
-			let newOrder = new Order({
-				userid: userID,
-				vendorid: article.sellerid,
-				articleid: article.id,
-				amount: article.quantity,
-				shipped: false,
-				arrived: false,
-				paidDate: now
-			});
+		let articleIds = cartItems.map( element => element.id);
 
-			//console.log(newOrder);
-			newOrder.save().then( () => {
-				return res.status(201).json({
-						success: true,
-						msg: "Ordine per l'articolo "+newOrder.articleid+" registrato."
+		Article.find({ _id : {$in : articleIds}}).then(articles => {
+			let orderIsFine = true;
+			let articlesNotAvailable = [];
+		
+			articles.forEach(article => {
+				cartItems.forEach(wantedArticle => {
+					if(wantedArticle.id == article._id){
+						if(wantedArticle.quantity > article.availability){
+							//L'articolo voluto non è disponibili devo annullare l'ordine
+							articlesNotAvailable.push(article.name);
+							orderIsFine = false;
+						}
+					}
 				});
 			});
-		});
+		
+			if(orderIsFine){
+				//TODO fix promise
+				var articleUpdates = [];
+
+				cartItems.forEach(article => {
+					//Aggiorno la disponibilità nel catalogo poi creo l'ordine e rispondo al client
+					var updatePromise = Article.updateOne({_id : article.id}, 
+						[
+							{
+								$set : {
+									availability : {
+										$subtract: [ "$availability", article.quantity ] 
+									}
+								}
+							}
+						]
+					);
+					articleUpdates.push(updatePromise);
+				});
+
+				Promise.all(articleUpdates).then(results => {
+					cartItems.forEach(article => {
+						const now =  (new Date()).toUTCString();
+						let newOrder = new Order({
+							userid: userID,
+							vendorid: article.sellerid,
+							articleid: article.id,
+							amount: article.quantity,
+							shipped: false,
+							arrived: false,
+							paidDate: now
+						});
+	
+						newOrder.save().then( () => {
+							return res.status(201).json({
+									success: true,
+									msg: "Ordine per l'articolo registrato."
+							});
+						});
+					});
+				});				
+			}else{
+				
+				let formattedText = "";
+				articlesNotAvailable.forEach(element => formattedText += "* "+element.toString()+"\n");
+				return res.status(401).json({
+					success: false,
+					msg: "Alcuni degli articoli nell'ordine non sono disponibili nella quantità richiesta: \n"+formattedText
+				});
+			}
+		})
 	}else{
-		return res.json({
-			success: false
+		return res.status(500).json({
+			success: false,
+			msg: "Il server ha qualche problema a processare la richiesta."
 		});
 	}
 });
@@ -92,7 +118,7 @@ router.post('/checkout', passport.authenticate('user-rule', {
  * @access Private
  */
 
-router.get('/getActiveOrders', passport.authenticate('user-rule', { 
+router.get('/getActiveOrders', passport.authenticate('user-rule', {
 	session : false 
 }), (req, res) => {
 	let userid = req.user.id;
@@ -103,8 +129,6 @@ router.get('/getActiveOrders', passport.authenticate('user-rule', {
 	})
 	.sort({paidDate: 'desc'})
 	.then(orderListRaw => {
-		//const orderList = [];
-		//console.log(orderListRaw);
 		let sellerIds = orderListRaw.map( element => element.vendorid);
 		let articleIds = orderListRaw.map( element => element.articleid);
 
@@ -116,7 +140,7 @@ router.get('/getActiveOrders', passport.authenticate('user-rule', {
 				Article.find({ _id : {$in : articleIds}}),
 				Vendor.find({ _id : {$in : sellerIds}}),
 				orderListRaw
-		]);
+			]);
 		}else{
 			console.log("Non ho trovato ordini per l'utente");
 			return res.status(201).json({
@@ -186,7 +210,6 @@ router.get('/getActiveOrders', passport.authenticate('user-rule', {
 	});
 });
 
-
 /**
  * @route POST api/dashboard/user/setArticleArrived
  * @desc Ricevo come payload ID di un ordine da aggiornare e settare come arrivato.
@@ -208,12 +231,12 @@ router.post('/setArticleArrived', passport.authenticate('user-rule', {
 		
 		order.save().then( () => {
 			return res.status(201).json({
+				arrivedDate: order.arrivedDate,
 				success: true
 			});
 		});
 	})
 	.catch(err => {
-		console.log(err);
 		return res.status(500).json({
 			msg: 'Il server ha qualche problema a soddisfare la richiesta. Riprova più tardi.',
 			success: false
