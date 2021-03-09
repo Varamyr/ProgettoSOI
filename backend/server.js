@@ -23,14 +23,6 @@ app.use(cors({
 	optionsSuccessStatus: 200
 }));
 
-//Gestisco i file in produzione
-if(process.env.NODE_ENV === 'production'){
-  	//Static folder
-	app.use(express.static(__dirname + '/public'));
-	//Handle single page app
-	app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-}
-
 //Utilizzo il middleware passport per gestire l'autenticazione
 app.use(passport.initialize());
 //Scelgo la strategia
@@ -39,7 +31,7 @@ require('./config/passport')(passport)
 //Connessione al database mongoDB tramite middleware Mongoose
 const db = require('./config/keys').mongoURI;
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }).then( () => {
-	console.log(`Connessione al database ${db} riuscita.`);
+	console.log(`Connessione al database riuscita.`);
 }).catch( err => {
 	console.log(`Errore durante la connessione al database ${db}: ${err}`);
 });
@@ -54,6 +46,19 @@ app.use('/api/auth', auth);
 const userDashboard = require('./routes/api/dashboard/user');
 app.use('/api/dashboard/user', userDashboard);
 
+const vendorDashboard = require('./routes/api/dashboard/vendor');
+app.use('/api/dashboard/vendor', vendorDashboard);
+
+const adminDashboard = require('./routes/api/dashboard/admin');
+app.use('/api/dashboard/admin', adminDashboard);
+
+//Gestisco i file in produzione
+if(process.env.NODE_ENV === 'production'){
+	//Static folder
+	app.use(express.static(__dirname + '/public'));
+	//Handle single page app
+	app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
 
 const port = process.env.port || 5000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));

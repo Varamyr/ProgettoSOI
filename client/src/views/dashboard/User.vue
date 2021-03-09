@@ -1,17 +1,22 @@
 <template>
 	<div id="user">
 		<page-header/>
-		Profilo
+		<article-component/>
+		<notification-component/>
 	</div>
 </template>
 
 <script>
-import PageHeader from '../../components/PageHeader';
+import ArticleComponent from '../../components/articles/ArticleComponent.vue';
+import NotificationComponent from '../../components/ui/notifications/NotificationComponent.vue';
+import PageHeader from '../../components/ui/PageHeader.vue';
 
 export default {
 	name: 'user',
 	components: {
-		PageHeader
+		ArticleComponent,
+		PageHeader,
+		NotificationComponent
 	}
 }
 </script>
