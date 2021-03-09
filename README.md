@@ -1,15 +1,10 @@
 # ProgettoSOI
-E-commerce webapp sviluppata con Node.js
-
-Tutorial ecco ciaone
-
-Node https://www.youtube.com/watch?v=fBNz5xF-Kx4
-
-Express https://www.youtube.com/watch?v=L72fhGm1tfE
-
+E-commerce REST webapp sviluppata con Node.js e Vue.js
 
 Per lanciare il server 
-npm run dev 
+npm run server
 
 Per lanciare il client
-entrare in frontend e poi npm run serve
+
+cd /client
+npm run serve
