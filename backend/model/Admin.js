@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-//Creo il modello dell'utente
 const AdminSchema = new Schema({
 	email: {
 		type: String,
